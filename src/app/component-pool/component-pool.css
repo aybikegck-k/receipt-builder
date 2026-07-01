@@ -1,0 +1,23 @@
+:host {
+    width: 280px;
+    background: #ffffff;
+    padding: 20px;
+    border-right: 1px solid #e0e0e0;
+}
+
+.item {
+    background: #f8f9fa;
+    margin-bottom: 10px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    cursor: grab; /* Sürükleme imleci */
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.item:hover {
+    background: #eef6ff;
+    border-color: #007bff;
+    transform: translateX(5px);
+}

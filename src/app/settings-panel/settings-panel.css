@@ -1,0 +1,13 @@
+:host {
+    width: 300px;
+    background: #ffffff;
+    padding: 20px;
+    border-left: 1px solid #e0e0e0;
+}
+
+h2 {
+    font-size: 1.2rem;
+    color: #444;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+}

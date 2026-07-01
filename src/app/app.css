@@ -1,0 +1,12 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #eef2f5; /* Arka planı biraz daha yumuşattık */
+}
+
+.container {
+    display: flex;
+    height: calc(100vh - 70px);
+    padding: 10px;
+    gap: 10px; /* Bileşenler arası boşluk */
+}

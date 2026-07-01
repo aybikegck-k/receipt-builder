@@ -1,0 +1,26 @@
+.navbar {
+    background: #ffffff; /* Siyahı kaldırdık, beyaz oldu */
+    padding: 10px 20px;
+    border-bottom: 1px solid #e0e0e0; /* Hafif bir çizgi ile altını belirginleştirdik */
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Çok hafif bir derinlik */
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Logo ile yazı arasındaki boşluk */
+}
+
+.logo {
+    height: 40px; /* Logonun boyutunu buradan ayarlayabilirsin */
+    width: auto;
+}
+
+.navbar h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #333; /* Yazıyı siyah/gri yaptık */
+    font-weight: 600;
+}

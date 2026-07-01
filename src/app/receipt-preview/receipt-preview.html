@@ -1,0 +1,15 @@
+<h2>Adisyon Önizleme</h2>
+
+<div
+  class="receipt"
+  cdkDropList
+  id="receiptList"
+  [cdkDropListData]="items"
+  [cdkDropListConnectedTo]="['componentPool']"
+  (cdkDropListDropped)="drop($event)">
+
+  <div *ngFor="let item of items" class="receipt-item">
+    <p>{{ item.text }}</p>
+  </div>
+
+</div>

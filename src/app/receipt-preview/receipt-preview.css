@@ -1,0 +1,29 @@
+:host {
+    flex: 1;
+    display: flex;
+    flex-direction: column; /* Başlık ve fişi alt alta dizmek için */
+    align-items: center;    /* Fişi yatayda tam ortalar */
+    padding: 20px;
+    background-color: #f8f9fa; /* Arka planı biraz grileştirerek beyaz fişi ortaya çıkarır */
+    overflow-y: auto;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.receipt {
+    width: 300px;
+    min-height: 450px;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Kağıt efekti veren gölge */
+    border: 1px solid #eee;
+    padding: 20px;
+    border-radius: 4px;
+    /* Fişin içine eklenecek içerikler için esneklik */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

@@ -1,0 +1,19 @@
+<h2>Bileşenler</h2>
+
+<div
+  class="pool-list"
+  cdkDropList
+  id="componentPool"
+  [cdkDropListData]="components"
+  [cdkDropListConnectedTo]="['receiptList']">
+
+  <div
+    class="item"
+    *ngFor="let component of components"
+    cdkDrag
+    [cdkDragData]="component.type">
+
+    {{ component.label }}
+
+  </div>
+</div>

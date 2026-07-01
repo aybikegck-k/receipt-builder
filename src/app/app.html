@@ -1,0 +1,9 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <app-component-pool (addComponentEvent)="addComponent($event)"></app-component-pool>
+  
+  <app-receipt-preview [items]="receiptItems"></app-receipt-preview>
+
+  <app-settings-panel></app-settings-panel>
+</div>
