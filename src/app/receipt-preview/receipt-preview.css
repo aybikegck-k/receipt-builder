@@ -1,11 +1,11 @@
 :host {
-    flex: 1;
-    display: flex;
+    flex: 1; /*kalan boşluğu bana ver*/
+    display: flex; /*bu konteyner iiçndeki alanı düzenledi yani başlık fiş vs alt alta yazılsın column seçildi*/
     flex-direction: column; /* Başlık ve fişi alt alta dizmek için */
     align-items: center;    /* Fişi yatayda tam ortalar */
     padding: 20px;
     background-color: #f8f9fa; /* Arka planı biraz grileştirerek beyaz fişi ortaya çıkarır */
-    overflow-y: auto;
+    overflow-y: auto; /*ürün eklendikce scroll çıkmasını sağlıyor*/
 }
 
 h2 {
@@ -23,7 +23,18 @@ h2 {
     padding: 20px;
     border-radius: 4px;
     /* Fişin içine eklenecek içerikler için esneklik */
-    display: flex;
+    display: flex; /*gelen elemanların nasıl dizileceği*/
     flex-direction: column;
     gap: 10px;
+}
+.font-small {
+  font-size: 12px;
+}
+
+.font-normal {
+  font-size: 16px;
+}
+
+.font-large {
+  font-size: 22px;
 }

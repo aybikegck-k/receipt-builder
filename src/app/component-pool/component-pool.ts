@@ -10,9 +10,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
   styleUrl: './component-pool.css',
 })
 export class ComponentPool {
-  @Output() addComponentEvent = new EventEmitter<string>();
+  @Output() addComponentEvent /*eventin adı */ = new EventEmitter<string>();//gönderilen şey string olacak
 
-  components = [
+  components = [ //angularda ekran görnen veri ts de tutulur html de değil ts veriyi tutar html gösterir bir özellik eklemek istediğimide buraya ekleriz
     { type: 'logo', label: '🍽️ Logo' },
     { type: 'restoran', label: '🏪 Restoran Adı' },
     { type: 'tarih', label: '📅 Tarih' },
@@ -23,3 +23,8 @@ export class ComponentPool {
     { type: 'dipnot', label: '📝 Dipnot' },
   ];
 }
+//output-> dışarı çıkış. yani bu component dışarıya haber gönderecek
+//yani componenetPool App e haber veriyor
+//eventEmitter-> bu görünce aklına şu gelsin bu compenent dışarıya haber gönderecek
+//@output bu yazıldığında bu diyor ki birazdan olusturacagım değişken normal değişken değil bu bir event
+//event->uygulamada gerçekleşen ve başka bir kodun tepki vermesini sağlayan harekettir logo süürklendş event, logo bırakıldı event, butona tıklandı event gibi

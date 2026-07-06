@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { NgFor } from '@angular/common';
+import { NgFor } from '@angular/common';//htmldeki *ngFor çalışabilsin diye
 import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop';
-
+//DragDropModule:Bu bütün sürükle-bırak sistemini Angular'a ekliyor. yani htmlde cdkDropList yazmammıkzı sağlıyor
 @Component({
   selector: 'app-receipt-preview',
   standalone: true,
@@ -10,7 +10,8 @@ import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop';
   styleUrl: './receipt-preview.css',
 })
 export class ReceiptPreview {
-  @Input() items: any[] = [];
+  @Input() items  /*App, bana gönderdiğin veriyi ben items ismiyle kullanacağım*/: any[] = [];
+  @Input() fontSize: string = 'normal';
 
   drop(event: CdkDragDrop<any[]>) {
   const type = event.item.data;
@@ -38,3 +39,7 @@ export class ReceiptPreview {
     }
   }
 }
+//input :Parent componentten veri almamızı sağlar.
+//CdkDragDrop DragDropModule->Sistemi kuruyor.->CdkDragDrop->Bırakma anındaki bilgileri taşıyor.
+//Yani kullanıcı bıraktığında Angular sana şöyle bir paket veriyor.->event
+//İçinde hangi eleman nereden geldi nereye bırakıldı gibi bilgiler var.

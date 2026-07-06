@@ -1,9 +1,17 @@
-<app-navbar></app-navbar>
+
+<app-navbar></app-navbar> <!--angular arkada bütün navbarı getiriyor-->
 
 <div class="container">
   <app-component-pool (addComponentEvent)="addComponent($event)"></app-component-pool>
   
-  <app-receipt-preview [items]="receiptItems"></app-receipt-preview>
+  <app-receipt-preview [items]="receiptItems"
+  [fontSize]="fontSize"></app-receipt-preview>
 
-  <app-settings-panel></app-settings-panel>
+  <app-settings-panel
+   (fontSizeChange)="changeFontSize($event)">
+
+  </app-settings-panel>
 </div>
+
+<!--() event dinle bu event oluşursa şunu çalıştır
+ []veri gönder demek-->

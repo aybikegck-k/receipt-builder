@@ -9,7 +9,16 @@
   (cdkDropListDropped)="drop($event)">
 
   <div *ngFor="let item of items" class="receipt-item">
-    <p>{{ item.text }}</p>
+    <p
+    [class.font-small]="fontSize === 'small'"
+    [class.font-normal]="fontSize === 'normal'"
+    [class.font-large]="fontSize === 'large'">
+        {{ item.text }}</p>
   </div>
 
 </div>
+<!--cdkDropList burayı bırakılabilir alan yapıyor id:receiptList bu alanın adı yani solda verdiğimiz ad aslında bu diyorki ben receiptListe bağlıyım
+cdkDropListData : bu drop alanın verisi items dizisi yani appden gelen adisyon bileşenleri
+kullanıcı buraya bir şey bırakınca drop() fonksitonu çalışır
+ alttaki diz içide olan kod iste ekrana basma kısmı items dizisindeki
+ her bileşen için bir kutu oluştur ve içindeki text değerini ekrana yazdır-->

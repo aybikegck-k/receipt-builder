@@ -2,7 +2,7 @@
 
 <div
   class="pool-list"
-  cdkDropList
+  cdkDropList 
   id="componentPool"
   [cdkDropListData]="components"
   [cdkDropListConnectedTo]="['receiptList']">
@@ -17,3 +17,22 @@
 
   </div>
 </div>
+
+<!--cdkDropList  burası sürükle bırak sistemine dahil olan liste
+id vermemizin sebeb lissteye kimlik veriyoruz ki sonra o kimlikle baska yeden ona bağlanabilelim
+[cdkDropListData]="components" “Bu drop list’in arkasındaki veri components dizisidir
+*ngFor="let component of components"“components dizisindeki her eleman için bu div’den bir tane oluştur.
+cdkDrag-> bu kutu sürüklenebilir 
+[cdkDragData]="component.type"
+
+Bu satır, sürüklenen kutunun yanında hangi bilgiyi taşıyacağını belirliyor.
+
+Mesela Logo sürüklenirse:
+
+component.type = 'logo'
+
+Adisyona bırakınca event.item.data içinden 'logo' gelir.
+
+Yani biz kutuyu değil, aslında şu veriyi taşıyoruz:
+
+logo-->
