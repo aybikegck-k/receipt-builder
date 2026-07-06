@@ -14,6 +14,7 @@ import { SettingsPanel } from './settings-panel/settings-panel';
 export class App { //adisyondaki bütün bileşenler ilk hali boş eklendikçe dolacak
   receiptItems: any[] = []; //
   fontSize: string = 'normal';
+  selectedItem: any = null; //şuan hangi bileşen seçili basta bir şey seçili olmadıgı için null
 
   addComponent(type: string) { //Yeni bir bileşen nesnesi oluştur ve receiptItems dizisine ekle.
     const newItem = { //bu class gelen tipin özelliklerini belirler id , renk ,boyut vs
@@ -28,6 +29,20 @@ export class App { //adisyondaki bütün bileşenler ilk hali boş eklendikçe d
   changeFontSize(size: string) {
     this.fontSize = size;
   }
+
+ selectItem(item: any) { //bu fonksiyon ReceiptPreview den seçili item bilgisini App'e kaydediyor.yani kullanıcı tasarım alanında tarihe tıklarsa app artık seçili item ın tarih oldugunu biliyor.
+  
+  this.selectedItem = item;
+}
+deleteSelectedItem() { //silme fonksiyonu
+  if (!this.selectedItem) return;//seçili item yoksa bir şey yapma
+ 
+  this.receiptItems = this.receiptItems.filter(
+    item => item.id !== this.selectedItem.id
+  );//Seçili item varsa receiptItems dizisinden onun id değerine sahip olan elemanı çıkarıyor. Sonra seçimi sıfırlıyor.
+
+  this.selectedItem = null;
+}
 //placeholder yazısını belirleme işini ayrı bir fonksiyonda aldık böylece ekleme işiyle metin belirleme işi birbiirne karışmadı
   getPlaceholderText(type: string): string {
     switch(type) {

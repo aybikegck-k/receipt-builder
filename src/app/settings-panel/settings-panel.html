@@ -1,5 +1,16 @@
 <h2>Özellikler</h2>
 
+<div *ngIf="selectedItem; else noSelection">
+    <!--Eğer selectedItem varsa bu div'i göster. Yoksa noSelection kısmını göster.-->
+  <h3>Seçili Bileşen</h3>
+  <p><strong>Tip:</strong> {{ selectedItem.type }}</p>
+  <p><strong>Metin:</strong> {{ selectedItem.text }}</p>
+  <button (click)="deleteSelectedItem()">Sil</button>
+</div>
+
+<ng-template #noSelection> <!--selectedItem yani seçili bir şey yoksa alttaki yazıyı gösteriri-->
+  <p>Bileşen seçildiğinde ayarlar burada görünecek.</p>
+</ng-template>
 
 <h2>Ayarlar</h2>
 

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input,Output,EventEmitter } from '@angular/core';
 import { NgFor } from '@angular/common';//htmldeki *ngFor çalışabilsin diye
 import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop';
 //DragDropModule:Bu bütün sürükle-bırak sistemini Angular'a ekliyor. yani htmlde cdkDropList yazmammıkzı sağlıyor
@@ -12,6 +12,8 @@ import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop';
 export class ReceiptPreview {
   @Input() items  /*App, bana gönderdiğin veriyi ben items ismiyle kullanacağım*/: any[] = [];
   @Input() fontSize: string = 'normal';
+  @Input() selectedItem: any = null; //appden gelen seçli item i aldık
+  @Output() itemSelected = new EventEmitter<any>(); //appe ıtem seçildi diye haber gönderdi
 
   drop(event: CdkDragDrop<any[]>) {
   const type = event.item.data;
@@ -23,6 +25,11 @@ export class ReceiptPreview {
   };
 
   this.items.push(newItem);
+}
+
+  selectItem(item: any) { //tıklanan item ı appe gönderecek fonksiyon
+  this.itemSelected.emit(item);
+  //kullanıcı item a tıklar-> selectedItem(item) çalışır->emit(item) ile appe eseçilen item gönderilir->app selectedItem değerini günceller
 }
 
   getPlaceholderText(type: string): string {

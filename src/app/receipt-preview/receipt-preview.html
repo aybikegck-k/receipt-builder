@@ -1,19 +1,46 @@
-<h2>Adisyon Önizleme</h2>
+<div class="preview-wrapper">
 
-<div
-  class="receipt"
-  cdkDropList
-  id="receiptList"
-  [cdkDropListData]="items"
-  [cdkDropListConnectedTo]="['componentPool']"
-  (cdkDropListDropped)="drop($event)">
+  <div class="editor-section">
+    <h2>Tasarım Alanı</h2>
 
-  <div *ngFor="let item of items" class="receipt-item">
-    <p
+    <div
+      class="receipt editor-receipt"
+      cdkDropList
+      id="receiptList"
+      [cdkDropListData]="items"
+      [cdkDropListConnectedTo]="['componentPool']"
+      (cdkDropListDropped)="drop($event)"> <!--bir şey bırakılırsa ts tarafındaki drop()çalışır-->
+
+    <div
+  *ngFor="let item of items"
+  class="receipt-item"
+  [class.selected-item]="selectedItem?.id === item.id"
+  (click)="selectItem(item)"> <!--eskiden ıtem sadece görünüyordu şidmi tıklanılabiliyor-->
+
+  <p
     [class.font-small]="fontSize === 'small'"
     [class.font-normal]="fontSize === 'normal'"
     [class.font-large]="fontSize === 'large'">
-        {{ item.text }}</p>
+    {{ item.text }}
+  </p>
+</div>
+
+    </div>
+  </div>
+
+  <div class="final-section">
+    <h2>Önizleme</h2>
+
+    <div class="receipt final-receipt">
+      <div *ngFor="let item of items" class="receipt-item preview-item">
+        <p
+          [class.font-small]="fontSize === 'small'"
+          [class.font-normal]="fontSize === 'normal'"
+          [class.font-large]="fontSize === 'large'">
+          {{ item.text }}
+        </p>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -21,4 +48,9 @@
 cdkDropListData : bu drop alanın verisi items dizisi yani appden gelen adisyon bileşenleri
 kullanıcı buraya bir şey bırakınca drop() fonksitonu çalışır
  alttaki diz içide olan kod iste ekrana basma kısmı items dizisindeki
- her bileşen için bir kutu oluştur ve içindeki text değerini ekrana yazdır-->
+ her bileşen için bir kutu oluştur ve içindeki text değerini ekrana yazdır
+ 
+ (click) : Kullanıcı item'a tıklayınca selectItem() çalışır.
+
+[class.selected-item] :
+Seçili item ile bu item aynıysa selected-item CSS classını ekler.-->

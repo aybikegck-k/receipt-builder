@@ -1,32 +1,70 @@
 :host {
-    flex: 1; /*kalan boşluğu bana ver*/
-    display: flex; /*bu konteyner iiçndeki alanı düzenledi yani başlık fiş vs alt alta yazılsın column seçildi*/
-    flex-direction: column; /* Başlık ve fişi alt alta dizmek için */
-    align-items: center;    /* Fişi yatayda tam ortalar */
-    padding: 20px;
-    background-color: #f8f9fa; /* Arka planı biraz grileştirerek beyaz fişi ortaya çıkarır */
-    overflow-y: auto; /*ürün eklendikce scroll çıkmasını sağlıyor*/
+  flex: 1;
+  display: flex;
+  padding: 20px;
+  background-color: #f8f9fa;
+  overflow-y: auto;
+}
+
+.preview-wrapper {
+  display: flex;
+  gap: 25px;
+  width: 100%;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.editor-section,
+.final-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 h2 {
-    color: #333;
-    margin-bottom: 20px;
-    font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: 600;
 }
 
 .receipt {
-    width: 300px;
-    min-height: 450px;
-    background: white;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Kağıt efekti veren gölge */
-    border: 1px solid #eee;
-    padding: 20px;
-    border-radius: 4px;
-    /* Fişin içine eklenecek içerikler için esneklik */
-    display: flex; /*gelen elemanların nasıl dizileceği*/
-    flex-direction: column;
-    gap: 10px;
+  width: 300px;
+  min-height: 450px;
+  background: white;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  border: 1px solid #eee;
+  padding: 20px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
+
+.editor-receipt {
+  border: 2px dashed #007bff;
+}
+
+.final-receipt {
+  border: 2px solid #ddd;
+}
+
+.receipt-item {
+  border: 1px dashed #ccc;
+  padding: 8px;
+  border-radius: 4px;
+  background: #fafafa;
+}
+
+.preview-item {
+  border: none;
+  background: transparent;
+}
+
+.receipt-item p {
+  margin: 0;
+  text-align: center;
+}
+
 .font-small {
   font-size: 12px;
 }
@@ -37,4 +75,9 @@ h2 {
 
 .font-large {
   font-size: 22px;
+}
+
+.receipt-item.selected-item {
+  border: 3px solid #007bff !important;
+  background-color: #dceeff !important;
 }

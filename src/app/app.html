@@ -4,14 +4,27 @@
 <div class="container">
   <app-component-pool (addComponentEvent)="addComponent($event)"></app-component-pool>
   
-  <app-receipt-preview [items]="receiptItems"
-  [fontSize]="fontSize"></app-receipt-preview>
+<app-receipt-preview
+  [items]="receiptItems"
+  [fontSize]="fontSize"
+  [selectedItem]="selectedItem"
+  (itemSelected)="selectItem($event)">
+</app-receipt-preview>
+   <!--itemselected->bu receiptpreviewin output() ile gönderdiği event
+  selectedItem($event)-> bu app.tsdeki fonk $->ReceiptPreview'ın gönderdiği veri. -->
 
-  <app-settings-panel
-   (fontSizeChange)="changeFontSize($event)">
 
-  </app-settings-panel>
+<app-settings-panel
+  [selectedItem]="selectedItem" //settings panele gönderiyor
+  (fontSizeChange)="changeFontSize($event)"
+  (deleteItem)="deleteSelectedItem()">
+  <!--settingpanel->sil butonu->app-> delteSelectedItem()  -->
+</app-settings-panel>
 </div>
 
 <!--() event dinle bu event oluşursa şunu çalıştır
- []veri gönder demek-->
+ []veri gönder demek
+ () : Event dinle (Child → Parent)
+[] : Veri gönder (Parent → Child)
+ sil butonunda $event kullanmadık çünkü sil butonu Appe e herhangi bir veri göndermiyor sadece sil o yüzden EventEmitter<void>  yani veri yok olay var -->
+
