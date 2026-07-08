@@ -24,6 +24,19 @@ export class ReceiptPreview {
   allowDrop(event: DragEvent) {
     event.preventDefault();
   }
+  getTotal() {
+  const productItem = this.items.find(
+    item => item.type === 'urunler'
+  );
+
+  if (!productItem) return 0;
+
+  return productItem.products.reduce(
+    (total: number, product: any) =>
+      total + product.quantity * product.price,
+    0
+  );
+}
 
   dropComponent(event: DragEvent) {
     event.preventDefault();

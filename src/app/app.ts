@@ -28,6 +28,21 @@ export class App { //adisyondaki bütün bileşenler ilk hali boş eklendikçe d
     this.receiptItems.push(newItem);
   }
 
+  getTotal(): number {
+
+  const productItem = this.receiptItems.find(
+    x => x.type === 'urunler'
+  );
+
+  if (!productItem) return 0;
+
+  return productItem.products.reduce(
+    (total: number, product: any) =>
+      total + product.quantity * product.price,
+    0
+  );
+
+}
   createReceiptItem(type: string, x: number, y: number) {
     return {
       id: Date.now() + Math.random(),
@@ -36,6 +51,12 @@ export class App { //adisyondaki bütün bileşenler ilk hali boş eklendikçe d
       imageUrl: '',
 logoWidth: 120,
 logoHeight: 80,
+products: type === 'urunler'
+  ? [
+      { name: 'Kola', quantity: 1, price: 50 },
+      { name: 'Fanta', quantity: 1, price: 50 }
+    ]
+  : [],
       
 
       fontSize: 16,

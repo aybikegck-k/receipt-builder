@@ -1,7 +1,7 @@
 <div class="preview-wrapper">
 
   <div class="editor-section">
-    <h2>Tasarım Alanı</h2>
+    <h2>Fiş Tasarımı</h2>
 
     <div
       #editorReceipt
@@ -17,7 +17,7 @@
         [style.top.px]="item.y"
         (mousedown)="startMove($event, item)">
 
-        <p
+        <div
           [style.font-size.px]="item.fontSize"
           [style.font-weight]="item.bold ? 'bold' : 'normal'"
           [style.font-style]="item.italic ? 'italic' : 'normal'"
@@ -30,7 +30,7 @@
           [style.border-style]="item.borderStyle"
           [style.border-color]="item.borderColor">
 
-          <ng-container *ngIf="item.type === 'logo'; else normalText">
+          <ng-container *ngIf="item.type === 'logo'; else notLogo">
             <img
               *ngIf="item.imageUrl; else logoPlaceholder"
               [src]="item.imageUrl"
@@ -43,12 +43,33 @@
             {{ item.text }}
           </ng-template>
 
-          <ng-template #normalText>
-            {{ item.text }}
+          <ng-template #notLogo>
+            <ng-container *ngIf="item.type === 'urunler'; else normalText">
+              <div class="product-list">
+                <div class="product-row title-row">
+                  <span>Ürün</span>
+                  <span>Birim</span>
+                  <span>Tutar</span>
+                </div>
+
+                <div
+                  class="product-row"
+                  *ngFor="let product of item.products">
+                  <span>{{ product.quantity }}x {{ product.name }}</span>
+                  <span>{{ product.price }} TL</span>
+                  <span>{{ product.quantity * product.price }} TL</span>
+                </div>
+              </div>
+            </ng-container>
           </ng-template>
 
-        </p>
+          <ng-template #normalText>
+            {{ item.type === 'toplam'
+              ? ('Toplam: ' + getTotal() + ' TL')
+              : item.text }}
+          </ng-template>
 
+        </div>
       </div>
     </div>
   </div>
@@ -64,7 +85,7 @@
         [style.left.px]="item.x"
         [style.top.px]="item.y">
 
-        <p
+        <div
           [style.font-size.px]="item.fontSize"
           [style.font-weight]="item.bold ? 'bold' : 'normal'"
           [style.font-style]="item.italic ? 'italic' : 'normal'"
@@ -77,7 +98,7 @@
           [style.border-style]="item.borderStyle"
           [style.border-color]="item.borderColor">
 
-          <ng-container *ngIf="item.type === 'logo'; else normalPreviewText">
+          <ng-container *ngIf="item.type === 'logo'; else notPreviewLogo">
             <img
               *ngIf="item.imageUrl; else logoPreviewPlaceholder"
               [src]="item.imageUrl"
@@ -90,25 +111,35 @@
             {{ item.text }}
           </ng-template>
 
-          <ng-template #normalPreviewText>
-            {{ item.text }}
+          <ng-template #notPreviewLogo>
+            <ng-container *ngIf="item.type === 'urunler'; else normalPreviewText">
+              <div class="product-list">
+                <div class="product-row title-row">
+                  <span>Ürün</span>
+                  <span>Birim</span>
+                  <span>Tutar</span>
+                </div>
+
+                <div
+                  class="product-row"
+                  *ngFor="let product of item.products">
+                  <span>{{ product.quantity }}x {{ product.name }}</span>
+                  <span>{{ product.price }} TL</span>
+                  <span>{{ product.quantity * product.price }} TL</span>
+                </div>
+              </div>
+            </ng-container>
           </ng-template>
 
-        </p>
+          <ng-template #normalPreviewText>
+            {{ item.type === 'toplam'
+              ? ('Toplam: ' + getTotal() + ' TL')
+              : item.text }}
+          </ng-template>
 
+        </div>
       </div>
     </div>
   </div>
 
 </div>
-
-<!--cdkDropList burayı bırakılabilir alan yapıyor id:receiptList bu alanın adı yani solda verdiğimiz ad aslında bu diyorki ben receiptListe bağlıyım
-cdkDropListData : bu drop alanın verisi items dizisi yani appden gelen adisyon bileşenleri
-kullanıcı buraya bir şey bırakınca drop() fonksitonu çalışır
- alttaki diz içide olan kod iste ekrana basma kısmı items dizisindeki
- her bileşen için bir kutu oluştur ve içindeki text değerini ekrana yazdır
- 
- (click) : Kullanıcı item'a tıklayınca selectItem() çalışır.
-
-[class.selected-item] :
-Seçili item ile bu item aynıysa selected-item CSS classını ekler.-->

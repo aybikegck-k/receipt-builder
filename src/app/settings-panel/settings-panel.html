@@ -5,12 +5,10 @@
 
   <p><strong>Tip:</strong> {{ selectedItem.type }}</p>
 
+  <!-- LOGO AYARLARI -->
   <div *ngIf="selectedItem.type === 'logo'">
     <label>Logo Seç:</label>
-    <input
-      type="file"
-      accept="image/*"
-      (change)="selectLogoImage($event)">
+    <input type="file" accept="image/*" (change)="selectLogoImage($event)">
 
     <label>Logo Genişliği:</label>
     <input type="number" [(ngModel)]="selectedItem.logoWidth">
@@ -21,18 +19,79 @@
     <button class="delete-btn" (click)="deleteSelectedItem()">Sil</button>
   </div>
 
-  <div *ngIf="selectedItem.type !== 'logo'">
+ <!-- ÜRÜNLER AYARLARI -->
+<div *ngIf="selectedItem.type === 'urunler'">
+  <h4>Ürünler</h4>
+
+  <table class="product-table">
+    <thead>
+      <tr>
+        <th>Ürün</th>
+        <th>Adet</th>
+        <th>Fiyat</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let product of selectedItem.products; let i = index">
+        <td>
+          <input type="text" [(ngModel)]="product.name">
+        </td>
+
+        <td>
+          <input type="number" min="1" [(ngModel)]="product.quantity">
+        </td>
+
+        <td>
+          <input type="number" min="0" [(ngModel)]="product.price">
+        </td>
+
+        <td>
+          <button type="button" class="remove-btn" (click)="deleteProduct(i)">
+            ✕
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button type="button" class="add-btn" (click)="addProduct()">
+    + Ürün Ekle
+  </button>
+
+  <hr>
+
+ <div class="total-panel">
+    <span>Hesaplanan Toplam</span>
+
+    <div class="grand-total">
+        {{ getProductsTotal() }} TL
+    </div>
+</div>
+
+  <hr>
+
+  <label>Yazı Boyutu:</label>
+  <input type="number" [(ngModel)]="selectedItem.fontSize">
+
+  <label>Yazı Tipi:</label>
+  <select [(ngModel)]="selectedItem.fontFamily">
+    <option value="serif">Serif</option>
+    <option value="sans-serif">Sans Serif</option>
+    <option value="monospace">Monospace</option>
+    <option value="cursive">Cursive</option>
+  </select>
+
+  <button class="delete-btn" (click)="deleteSelectedItem()">
+    Bileşeni Sil
+  </button>
+</div>
+
+  <!-- NORMAL YAZI AYARLARI -->
+  <div *ngIf="selectedItem.type !== 'logo' && selectedItem.type !== 'urunler'">
     <label>Metin:</label>
-
-<textarea
-  *ngIf="selectedItem.type === 'urunler'; else normalInput"
-  [(ngModel)]="selectedItem.text"
-  rows="5">
-</textarea>
-
-<ng-template #normalInput>
-  <input type="text" [(ngModel)]="selectedItem.text">
-</ng-template>
+    <input type="text" [(ngModel)]="selectedItem.text">
 
     <label>Yazı Boyutu:</label>
     <input type="number" [(ngModel)]="selectedItem.fontSize">
