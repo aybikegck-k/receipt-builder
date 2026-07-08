@@ -1,24 +1,19 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, HostListener } from '@angular/core';
-import { NgFor } from '@angular/common'; //htmldeki *ngFor çalışabilsin diye
-import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop';
 
-//DragDropModule:Bu bütün sürükle-bırak sistemini Angular'a ekliyor. yani htmlde cdkDropList yazmammıkzı sağlıyor
+import { NgFor, NgIf } from '@angular/common';
 @Component({
   selector: 'app-receipt-preview',
   standalone: true,
-  imports: [NgFor, DragDropModule],
+  imports: [NgFor,NgIf],
   templateUrl: './receipt-preview.html',
   styleUrl: './receipt-preview.css',
 })
 export class ReceiptPreview {
-  @Input() items /*App, bana gönderdiğin veriyi ben items ismiyle kullanacağım*/: any[] = [];
+  @Input() items: any[] = [];
+  @Input() selectedItem: any = null;
 
-  @Input() selectedItem: any = null; //appden gelen seçli item i aldık
-
-  @Output() itemSelected = new EventEmitter<any>(); //appe ıtem seçildi diye haber gönderdi
-
+  @Output() itemSelected = new EventEmitter<any>();
   @Output() componentDropped = new EventEmitter<any>();
-  //soldan bırakılan component tipini App'e gönderir
 
   @ViewChild('editorReceipt') editorReceipt!: ElementRef;
 
@@ -26,17 +21,24 @@ export class ReceiptPreview {
   offsetX = 0;
   offsetY = 0;
 
-  drop(event: CdkDragDrop<any[]>) {
-    const type = event.item.data;
+  allowDrop(event: DragEvent) {
+    event.preventDefault();
+  }
+
+  dropComponent(event: DragEvent) {
+    event.preventDefault();
+
+    const type = event.dataTransfer?.getData('componentType');
+
+    if (!type) return;
 
     this.componentDropped.emit({
       type: type
     });
   }
 
-  selectItem(item: any) { //tıklanan item ı appe gönderecek fonksiyon
+  selectItem(item: any) {
     this.itemSelected.emit(item);
-    //kullanıcı item a tıklar-> selectedItem(item) çalışır->emit(item) ile appe eseçilen item gönderilir->app selectedItem değerini günceller
   }
 
   startMove(event: MouseEvent, item: any) {
@@ -45,9 +47,26 @@ export class ReceiptPreview {
     this.selectItem(item);
     this.draggingItem = item;
 
-    this.offsetX = event.offsetX;
-    this.offsetY = event.offsetY;
+    const itemElement = event.currentTarget as HTMLElement;
+    const rect = itemElement.getBoundingClientRect();
+
+    this.offsetX = event.clientX - rect.left;
+    this.offsetY = event.clientY - rect.top;
   }
+  selectLogoImage(event: Event, item: any) {
+  const input = event.target as HTMLInputElement;
+
+  if (!input.files || input.files.length === 0) return;
+
+  const file = input.files[0];
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    item.imageUrl = reader.result as string;
+  };
+
+  reader.readAsDataURL(file);
+}
 
   @HostListener('document:mousemove', ['$event'])
   moveItem(event: MouseEvent) {
@@ -64,8 +83,3 @@ export class ReceiptPreview {
     this.draggingItem = null;
   }
 }
-
-//input :Parent componentten veri almamızı sağlar.
-//CdkDragDrop DragDropModule->Sistemi kuruyor.->CdkDragDrop->Bırakma anındaki bilgileri taşıyor.
-//Yani kullanıcı bıraktığında Angular sana şöyle bir paket veriyor.->event
-//İçinde hangi eleman nereden geldi nereye bırakıldı gibi bilgiler var.

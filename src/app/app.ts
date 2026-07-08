@@ -33,6 +33,10 @@ export class App { //adisyondaki bütün bileşenler ilk hali boş eklendikçe d
       id: Date.now() + Math.random(),
       type: type,
       text: this.getPlaceholderText(type),
+      imageUrl: '',
+logoWidth: 120,
+logoHeight: 80,
+      
 
       fontSize: 16,
       bold: false,

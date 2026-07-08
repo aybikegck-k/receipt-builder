@@ -70,11 +70,20 @@ h2 {
 }
 
 .preview-item {
-  border: none;
-  background: transparent;
+  border:#233c57 ;
+  
 }
 
 .receipt-item.selected-item {
   border: 3px solid #afd3f9 !important;
-  background-color: #dceeff !important;
+  background-color: #dceeff !important;}
+  
+
+  .logo-image {
+  object-fit: contain;
+  display: block;
+}
+.receipt-item p {
+  margin: 0;
+  white-space: pre-line;
 }

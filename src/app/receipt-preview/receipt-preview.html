@@ -6,11 +6,8 @@
     <div
       #editorReceipt
       class="receipt editor-receipt"
-      cdkDropList
-      id="receiptList"
-      [cdkDropListData]="items"
-      [cdkDropListConnectedTo]="['componentPool']"
-      (cdkDropListDropped)="drop($event)">
+      (dragover)="allowDrop($event)"
+      (drop)="dropComponent($event)">
 
       <div
         *ngFor="let item of items"
@@ -32,7 +29,24 @@
           [style.border-width.px]="item.borderWidth"
           [style.border-style]="item.borderStyle"
           [style.border-color]="item.borderColor">
-          {{ item.text }}
+
+          <ng-container *ngIf="item.type === 'logo'; else normalText">
+            <img
+              *ngIf="item.imageUrl; else logoPlaceholder"
+              [src]="item.imageUrl"
+              [style.width.px]="item.logoWidth"
+              [style.height.px]="item.logoHeight"
+              class="logo-image">
+          </ng-container>
+
+          <ng-template #logoPlaceholder>
+            {{ item.text }}
+          </ng-template>
+
+          <ng-template #normalText>
+            {{ item.text }}
+          </ng-template>
+
         </p>
 
       </div>
@@ -62,7 +76,24 @@
           [style.border-width.px]="item.borderWidth"
           [style.border-style]="item.borderStyle"
           [style.border-color]="item.borderColor">
-          {{ item.text }}
+
+          <ng-container *ngIf="item.type === 'logo'; else normalPreviewText">
+            <img
+              *ngIf="item.imageUrl; else logoPreviewPlaceholder"
+              [src]="item.imageUrl"
+              [style.width.px]="item.logoWidth"
+              [style.height.px]="item.logoHeight"
+              class="logo-image">
+          </ng-container>
+
+          <ng-template #logoPreviewPlaceholder>
+            {{ item.text }}
+          </ng-template>
+
+          <ng-template #normalPreviewText>
+            {{ item.text }}
+          </ng-template>
+
         </p>
 
       </div>

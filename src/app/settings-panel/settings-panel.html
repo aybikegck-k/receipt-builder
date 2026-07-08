@@ -5,69 +5,89 @@
 
   <p><strong>Tip:</strong> {{ selectedItem.type }}</p>
 
-  <label>Metin:</label>
+  <div *ngIf="selectedItem.type === 'logo'">
+    <label>Logo Seç:</label>
+    <input
+      type="file"
+      accept="image/*"
+      (change)="selectLogoImage($event)">
+
+    <label>Logo Genişliği:</label>
+    <input type="number" [(ngModel)]="selectedItem.logoWidth">
+
+    <label>Logo Yüksekliği:</label>
+    <input type="number" [(ngModel)]="selectedItem.logoHeight">
+
+    <button class="delete-btn" (click)="deleteSelectedItem()">Sil</button>
+  </div>
+
+  <div *ngIf="selectedItem.type !== 'logo'">
+    <label>Metin:</label>
+
+<textarea
+  *ngIf="selectedItem.type === 'urunler'; else normalInput"
+  [(ngModel)]="selectedItem.text"
+  rows="5">
+</textarea>
+
+<ng-template #normalInput>
   <input type="text" [(ngModel)]="selectedItem.text">
+</ng-template>
 
-  <label>Yazı Boyutu:</label>
- <input type="number" [(ngModel)]="selectedItem.fontSize">
+    <label>Yazı Boyutu:</label>
+    <input type="number" [(ngModel)]="selectedItem.fontSize">
 
+    <label>Yazı Tipi:</label>
+    <select [(ngModel)]="selectedItem.fontFamily">
+      <option value="serif">Serif</option>
+      <option value="sans-serif">Sans Serif</option>
+      <option value="monospace">Monospace</option>
+      <option value="cursive">Cursive</option>
+    </select>
 
+    <label>
+      <input type="checkbox" [(ngModel)]="selectedItem.underline">
+      Altı çizili
+    </label>
 
-  <label>Yazı Tipi:</label>
-  <select [(ngModel)]="selectedItem.fontFamily">
-    <option value="serif">Serif</option>
-    <option value="sans-serif">Sans Serif</option>
-    <option value="monospace">Monospace</option>
-    <option value="cursive">Cursive</option>
-  </select>
-  <label>
-  <input type="checkbox" [(ngModel)]="selectedItem.underline">
-  Altı çizili
-</label>
+    <label>
+      <input type="checkbox" [(ngModel)]="selectedItem.bold">
+      Kalın
+    </label>
 
-  <label>
-    <input type="checkbox" [(ngModel)]="selectedItem.bold">
-    Kalın
-  </label>
+    <label>
+      <input type="checkbox" [(ngModel)]="selectedItem.italic">
+      İtalik
+    </label>
 
-  <label>
-    <input type="checkbox" [(ngModel)]="selectedItem.italic">
-    İtalik
-  </label>
+    <label>Hizalama:</label>
+    <select [(ngModel)]="selectedItem.align">
+      <option value="left">Sol</option>
+      <option value="center">Orta</option>
+      <option value="right">Sağ</option>
+    </select>
 
-  <label>Hizalama:</label>
- <select [(ngModel)]="selectedItem.align">
-  <option value="left">Sol</option>
-  <option value="center">Orta</option>
-  <option value="right">Sağ</option>
-</select>
+    <label>Yazı Rengi:</label>
+    <input type="color" [(ngModel)]="selectedItem.color">
 
-<label>Yazı Rengi:</label>
+    <label>Arka Plan Rengi:</label>
+    <input type="color" [(ngModel)]="selectedItem.backgroundColor">
 
-<input
-  type="color"
-  [(ngModel)]="selectedItem.color">
+    <label>Kenarlık Kalınlığı:</label>
+    <input type="number" min="0" [(ngModel)]="selectedItem.borderWidth">
 
+    <label>Kenarlık Rengi:</label>
+    <input type="color" [(ngModel)]="selectedItem.borderColor">
 
-<label>Arka Plan Rengi:</label>
-<input type="color" [(ngModel)]="selectedItem.backgroundColor">
+    <label>Kenarlık Tipi:</label>
+    <select [(ngModel)]="selectedItem.borderStyle">
+      <option value="solid">Solid</option>
+      <option value="dashed">Dashed</option>
+      <option value="dotted">Dotted</option>
+    </select>
 
-<label>Kenarlık Kalınlığı:</label>
-<input type="number" min="0" [(ngModel)]="selectedItem.borderWidth">
-
-<label>Kenarlık Rengi:</label>
-<input type="color" [(ngModel)]="selectedItem.borderColor">
-
-
-
-
-<label>Kenarlık Tipi:</label>
-<select [(ngModel)]="selectedItem.borderStyle">
-    <option value="solid">Solid</option>
-    <option value="dashed">Dashed</option>
-    <option value="dotted">Dotted</option>
-</select>
-  <button class="delete-btn" (click)="deleteSelectedItem()">Sil</button>
+    <button class="delete-btn" (click)="deleteSelectedItem()">Sil</button>
+  </div>
 </div>
 
 <ng-template #noSelection>

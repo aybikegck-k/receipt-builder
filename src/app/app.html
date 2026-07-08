@@ -1,24 +1,25 @@
+
 <app-navbar></app-navbar> <!--angular arkada bütün navbarı getiriyor-->
 
 <div class="container">
-  <app-component-pool
-    (addComponentEvent)="addComponent($event)">
-  </app-component-pool>
+ <app-component-pool
+  (addComponentEvent)="addComponent($event)">
+</app-component-pool>
   
-  <app-receipt-preview
-    [items]="receiptItems"
-    [selectedItem]="selectedItem"
-    (itemSelected)="selectItem($event)"
-    (componentDropped)="addComponent($event)">
-  </app-receipt-preview>
+<app-receipt-preview
+  [items]="receiptItems"
+  [selectedItem]="selectedItem"
+  (itemSelected)="selectItem($event)"
+  (componentDropped)="addComponent($event)">
+</app-receipt-preview>
    <!--itemselected->bu receiptpreviewin output() ile gönderdiği event
   selectedItem($event)-> bu app.tsdeki fonk $->ReceiptPreview'ın gönderdiği veri. -->
 
 
-  <app-settings-panel
-    [selectedItem]="selectedItem"
-    (deleteItem)="deleteSelectedItem()">
-  </app-settings-panel>
+<app-settings-panel
+  [selectedItem]="selectedItem"
+  (deleteItem)="deleteSelectedItem()">
+</app-settings-panel>
   <!--settingpanel->sil butonu->app-> delteSelectedItem()  -->
   <!-- selectedItem settings panele gönderiliyor -->
 
@@ -29,3 +30,4 @@
  () : Event dinle (Child → Parent)
 [] : Veri gönder (Parent → Child)
  sil butonunda $event kullanmadık çünkü sil butonu Appe e herhangi bir veri göndermiyor sadece sil o yüzden EventEmitter<void>  yani veri yok olay var -->
+
