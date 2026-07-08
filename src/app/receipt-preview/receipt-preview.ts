@@ -1,6 +1,7 @@
-import { Component, Input,Output,EventEmitter } from '@angular/core';
-import { NgFor } from '@angular/common';//htmldeki *ngFor çalışabilsin diye
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { NgFor } from '@angular/common'; //htmldeki *ngFor çalışabilsin diye
 import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop';
+
 //DragDropModule:Bu bütün sürükle-bırak sistemini Angular'a ekliyor. yani htmlde cdkDropList yazmammıkzı sağlıyor
 @Component({
   selector: 'app-receipt-preview',
@@ -10,42 +11,60 @@ import { DragDropModule, CdkDragDrop } from '@angular/cdk/drag-drop';
   styleUrl: './receipt-preview.css',
 })
 export class ReceiptPreview {
-  @Input() items  /*App, bana gönderdiğin veriyi ben items ismiyle kullanacağım*/: any[] = [];
-  @Input() fontSize: string = 'normal';
+  @Input() items /*App, bana gönderdiğin veriyi ben items ismiyle kullanacağım*/: any[] = [];
+
   @Input() selectedItem: any = null; //appden gelen seçli item i aldık
+
   @Output() itemSelected = new EventEmitter<any>(); //appe ıtem seçildi diye haber gönderdi
 
+  @Output() componentDropped = new EventEmitter<any>();
+  //soldan bırakılan component tipini App'e gönderir
+
+  @ViewChild('editorReceipt') editorReceipt!: ElementRef;
+
+  draggingItem: any = null;
+  offsetX = 0;
+  offsetY = 0;
+
   drop(event: CdkDragDrop<any[]>) {
-  const type = event.item.data;
+    const type = event.item.data;
 
-  const newItem = {
-    id: Date.now(),
-    type: type,
-    text: this.getPlaceholderText(type)
-  };
-
-  this.items.push(newItem);
-}
+    this.componentDropped.emit({
+      type: type
+    });
+  }
 
   selectItem(item: any) { //tıklanan item ı appe gönderecek fonksiyon
-  this.itemSelected.emit(item);
-  //kullanıcı item a tıklar-> selectedItem(item) çalışır->emit(item) ile appe eseçilen item gönderilir->app selectedItem değerini günceller
-}
+    this.itemSelected.emit(item);
+    //kullanıcı item a tıklar-> selectedItem(item) çalışır->emit(item) ile appe eseçilen item gönderilir->app selectedItem değerini günceller
+  }
 
-  getPlaceholderText(type: string): string {
-    switch (type) {
-      case 'logo': return 'Logonuz Buraya Gelecek';
-      case 'restoran': return 'Restoran Adınız';
-      case 'tarih': return new Date().toLocaleDateString();
-      case 'masa': return 'Masa No: 01';
-      case 'garson': return 'Garson: İsim';
-      case 'urunler': return 'Ürün Listesi';
-      case 'toplam': return 'Toplam: 0.00 TL';
-      case 'dipnot': return 'Afiyet olsun!';
-      default: return 'Yeni Öğe';
-    }
+  startMove(event: MouseEvent, item: any) {
+    event.preventDefault();
+
+    this.selectItem(item);
+    this.draggingItem = item;
+
+    this.offsetX = event.offsetX;
+    this.offsetY = event.offsetY;
+  }
+
+  @HostListener('document:mousemove', ['$event'])
+  moveItem(event: MouseEvent) {
+    if (!this.draggingItem) return;
+
+    const area = this.editorReceipt.nativeElement.getBoundingClientRect();
+
+    this.draggingItem.x = event.clientX - area.left - this.offsetX;
+    this.draggingItem.y = event.clientY - area.top - this.offsetY;
+  }
+
+  @HostListener('document:mouseup')
+  stopMove() {
+    this.draggingItem = null;
   }
 }
+
 //input :Parent componentten veri almamızı sağlar.
 //CdkDragDrop DragDropModule->Sistemi kuruyor.->CdkDragDrop->Bırakma anındaki bilgileri taşıyor.
 //Yani kullanıcı bıraktığında Angular sana şöyle bir paket veriyor.->event

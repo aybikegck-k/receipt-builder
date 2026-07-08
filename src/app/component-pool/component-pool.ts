@@ -10,9 +10,15 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
   styleUrl: './component-pool.css',
 })
 export class ComponentPool {
-  @Output() addComponentEvent /*eventin adı */ = new EventEmitter<string>();//gönderilen şey string olacak
 
-  components = [ //angularda ekran görnen veri ts de tutulur html de değil ts veriyi tutar html gösterir bir özellik eklemek istediğimide buraya ekleriz
+  @Output() addComponentEvent /*eventin adı */ = new EventEmitter<string>();
+  //gönderilen şey string olacak
+
+  components = [
+    //angularda ekranda görünen veri ts de tutulur html de değil
+    //ts veriyi tutar html gösterir
+    //bir özellik eklemek istediğimde buraya ekleriz
+
     { type: 'logo', label: '🍽️ Logo' },
     { type: 'restoran', label: '🏪 Restoran Adı' },
     { type: 'tarih', label: '📅 Tarih' },
@@ -22,9 +28,17 @@ export class ComponentPool {
     { type: 'toplam', label: '💰 Toplam' },
     { type: 'dipnot', label: '📝 Dipnot' },
   ];
+
+  addComponent(type: string) {
+    this.addComponentEvent.emit(type);
+  }
 }
+
 //output-> dışarı çıkış. yani bu component dışarıya haber gönderecek
-//yani componenetPool App e haber veriyor
-//eventEmitter-> bu görünce aklına şu gelsin bu compenent dışarıya haber gönderecek
-//@output bu yazıldığında bu diyor ki birazdan olusturacagım değişken normal değişken değil bu bir event
-//event->uygulamada gerçekleşen ve başka bir kodun tepki vermesini sağlayan harekettir logo süürklendş event, logo bırakıldı event, butona tıklandı event gibi
+//yani ComponentPool App'e haber veriyor
+//EventEmitter-> bunu görünce aklına şu gelsin:
+//"Bu component dışarıya haber gönderecek."
+//@Output yazıldığında oluşturacağımız değişken normal değişken değil,
+//bir event oluyor.
+//event-> uygulamada gerçekleşen ve başka bir kodun tepki vermesini sağlayan harekettir.
+//Logo sürüklendi event, logo bırakıldı event, butona tıklandı event gibi.

@@ -1,21 +1,75 @@
 <h2>Özellikler</h2>
 
 <div *ngIf="selectedItem; else noSelection">
-    <!--Eğer selectedItem varsa bu div'i göster. Yoksa noSelection kısmını göster.-->
   <h3>Seçili Bileşen</h3>
+
   <p><strong>Tip:</strong> {{ selectedItem.type }}</p>
-  <p><strong>Metin:</strong> {{ selectedItem.text }}</p>
-  <button (click)="deleteSelectedItem()">Sil</button>
+
+  <label>Metin:</label>
+  <input type="text" [(ngModel)]="selectedItem.text">
+
+  <label>Yazı Boyutu:</label>
+ <input type="number" [(ngModel)]="selectedItem.fontSize">
+
+
+
+  <label>Yazı Tipi:</label>
+  <select [(ngModel)]="selectedItem.fontFamily">
+    <option value="serif">Serif</option>
+    <option value="sans-serif">Sans Serif</option>
+    <option value="monospace">Monospace</option>
+    <option value="cursive">Cursive</option>
+  </select>
+  <label>
+  <input type="checkbox" [(ngModel)]="selectedItem.underline">
+  Altı çizili
+</label>
+
+  <label>
+    <input type="checkbox" [(ngModel)]="selectedItem.bold">
+    Kalın
+  </label>
+
+  <label>
+    <input type="checkbox" [(ngModel)]="selectedItem.italic">
+    İtalik
+  </label>
+
+  <label>Hizalama:</label>
+ <select [(ngModel)]="selectedItem.align">
+  <option value="left">Sol</option>
+  <option value="center">Orta</option>
+  <option value="right">Sağ</option>
+</select>
+
+<label>Yazı Rengi:</label>
+
+<input
+  type="color"
+  [(ngModel)]="selectedItem.color">
+
+
+<label>Arka Plan Rengi:</label>
+<input type="color" [(ngModel)]="selectedItem.backgroundColor">
+
+<label>Kenarlık Kalınlığı:</label>
+<input type="number" min="0" [(ngModel)]="selectedItem.borderWidth">
+
+<label>Kenarlık Rengi:</label>
+<input type="color" [(ngModel)]="selectedItem.borderColor">
+
+
+
+
+<label>Kenarlık Tipi:</label>
+<select [(ngModel)]="selectedItem.borderStyle">
+    <option value="solid">Solid</option>
+    <option value="dashed">Dashed</option>
+    <option value="dotted">Dotted</option>
+</select>
+  <button class="delete-btn" (click)="deleteSelectedItem()">Sil</button>
 </div>
 
-<ng-template #noSelection> <!--selectedItem yani seçili bir şey yoksa alttaki yazıyı gösteriri-->
+<ng-template #noSelection>
   <p>Bileşen seçildiğinde ayarlar burada görünecek.</p>
 </ng-template>
-
-<h2>Ayarlar</h2>
-
-<button (click)="selectFontSize('small')">Küçük</button>
-
-<button (click)="selectFontSize('normal')">Normal</button>
-
-<button (click)="selectFontSize('large')">Büyük</button>

@@ -4,27 +4,38 @@
     <h2>Tasarım Alanı</h2>
 
     <div
+      #editorReceipt
       class="receipt editor-receipt"
       cdkDropList
       id="receiptList"
       [cdkDropListData]="items"
       [cdkDropListConnectedTo]="['componentPool']"
-      (cdkDropListDropped)="drop($event)"> <!--bir şey bırakılırsa ts tarafındaki drop()çalışır-->
+      (cdkDropListDropped)="drop($event)">
 
-    <div
-  *ngFor="let item of items"
-  class="receipt-item"
-  [class.selected-item]="selectedItem?.id === item.id"
-  (click)="selectItem(item)"> <!--eskiden ıtem sadece görünüyordu şidmi tıklanılabiliyor-->
+      <div
+        *ngFor="let item of items"
+        class="receipt-item editor-item"
+        [class.selected-item]="selectedItem?.id === item.id"
+        [style.left.px]="item.x"
+        [style.top.px]="item.y"
+        (mousedown)="startMove($event, item)">
 
-  <p
-    [class.font-small]="fontSize === 'small'"
-    [class.font-normal]="fontSize === 'normal'"
-    [class.font-large]="fontSize === 'large'">
-    {{ item.text }}
-  </p>
-</div>
+        <p
+          [style.font-size.px]="item.fontSize"
+          [style.font-weight]="item.bold ? 'bold' : 'normal'"
+          [style.font-style]="item.italic ? 'italic' : 'normal'"
+          [style.font-family]="item.fontFamily"
+          [style.text-align]="item.align"
+          [style.color]="item.color"
+          [style.text-decoration]="item.underline ? 'underline' : 'none'"
+          [style.background-color]="item.backgroundColor"
+          [style.border-width.px]="item.borderWidth"
+          [style.border-style]="item.borderStyle"
+          [style.border-color]="item.borderColor">
+          {{ item.text }}
+        </p>
 
+      </div>
     </div>
   </div>
 
@@ -32,18 +43,34 @@
     <h2>Önizleme</h2>
 
     <div class="receipt final-receipt">
-      <div *ngFor="let item of items" class="receipt-item preview-item">
+
+      <div
+        *ngFor="let item of items"
+        class="receipt-item preview-item"
+        [style.left.px]="item.x"
+        [style.top.px]="item.y">
+
         <p
-          [class.font-small]="fontSize === 'small'"
-          [class.font-normal]="fontSize === 'normal'"
-          [class.font-large]="fontSize === 'large'">
+          [style.font-size.px]="item.fontSize"
+          [style.font-weight]="item.bold ? 'bold' : 'normal'"
+          [style.font-style]="item.italic ? 'italic' : 'normal'"
+          [style.font-family]="item.fontFamily"
+          [style.text-align]="item.align"
+          [style.color]="item.color"
+          [style.text-decoration]="item.underline ? 'underline' : 'none'"
+          [style.background-color]="item.backgroundColor"
+          [style.border-width.px]="item.borderWidth"
+          [style.border-style]="item.borderStyle"
+          [style.border-color]="item.borderColor">
           {{ item.text }}
         </p>
+
       </div>
     </div>
   </div>
 
 </div>
+
 <!--cdkDropList burayı bırakılabilir alan yapıyor id:receiptList bu alanın adı yani solda verdiğimiz ad aslında bu diyorki ben receiptListe bağlıyım
 cdkDropListData : bu drop alanın verisi items dizisi yani appden gelen adisyon bileşenleri
 kullanıcı buraya bir şey bırakınca drop() fonksitonu çalışır

@@ -1,21 +1,20 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-settings-panel',
   standalone: true,
-  imports: [NgIf],
+  imports: [NgIf,FormsModule],
   templateUrl: './settings-panel.html',
   styleUrl: './settings-panel.css',
 })
 export class SettingsPanel {
   @Input() selectedItem: any = null; //app buraya seçili item ı gönderiri burası da sağ panelde gösteriri
 
-  @Output() fontSizeChange = new EventEmitter<string>();
+
   @Output() deleteItem = new EventEmitter<void>();
 
-  selectFontSize(size: string) {
-    this.fontSizeChange.emit(size);
-  }
+ 
   deleteSelectedItem() { //kullanıcı sile basınca seetingspanel app e sil diyor
   this.deleteItem.emit();
 }
