@@ -95,7 +95,7 @@ products: type === 'urunler' ? [] : undefined,
       case 'Tarih': return new Date().toLocaleDateString();
       case 'Masa': return 'Masa No: 01';
       case 'Garson': return 'Garson: İsim';
-      case 'ÜrÜnler': return 'Ürün Listesi';
+      case 'Ürünler': return 'Ürün Listesi';
       case 'Toplam': return 'Toplam: 0.00 TL';
       case 'Dipnot': return 'Afiyet olsun!';
       default: return 'Yeni Öğe';

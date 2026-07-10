@@ -16,6 +16,11 @@ export class SettingsPanel {
   addProduct() {
   if (!this.selectedItem) return;
 
+  // products dizisi yoksa önce oluştur
+  if (!Array.isArray(this.selectedItem.products)) {
+    this.selectedItem.products = [];
+  }
+
   this.selectedItem.products.push({
     name: 'Yeni Ürün',
     quantity: 1,

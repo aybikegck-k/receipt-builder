@@ -20,7 +20,7 @@
   </div>
 
  <!-- ÜRÜNLER AYARLARI -->
-<div *ngIf="selectedItem.type === 'urunler'">
+<div *ngIf="selectedItem.type === 'Ürünler'">
   <h4>Ürünler</h4>
 
   <table class="product-table">
@@ -89,7 +89,7 @@
 </div>
 
   <!-- NORMAL YAZI AYARLARI -->
-  <div *ngIf="selectedItem.type !== 'Logo' && selectedItem.type !== 'ÜrÜnler'">
+  <div *ngIf="selectedItem.type !== 'Logo' && selectedItem.type !== 'Ürünler'">
     <label>Metin:</label>
     <input type="text" [(ngModel)]="selectedItem.text">
 

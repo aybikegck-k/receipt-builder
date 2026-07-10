@@ -16,7 +16,7 @@ export class ComponentPool {
     { type: 'Tarih', label: '📅 Tarih' },
     { type: 'Masa', label: '🪑 Masa' },
     { type: 'Garson', label: '👨‍🍳 Garson' },
-    { type: 'ÜrÜnler', label: '🍕 Ürünler' },
+    { type: 'Ürünler', label: '🍕 Ürünler' },
     { type: 'Toplam', label: '💰 Toplam' },
     { type: 'Dipnot', label: '📝 Dipnot' },
   ];
