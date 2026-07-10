@@ -26,7 +26,7 @@ export class ReceiptPreview {
   }//bu varsayılan bu davranısı engeller ve bırakılabilir hale getirir
   getTotal() {
   const productItem = this.items.find( //
-    item => item.type === 'ÜrÜnler' //items dizisi içinde tipi ürünler olan elemanı bul
+    item => item.type === 'Ürünler' //items dizisi içinde tipi ürünler olan elemanı bul
   );
 
   if (!productItem) return 0; //yoksa toplam 0
