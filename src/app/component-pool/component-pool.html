@@ -4,12 +4,18 @@
 
   <div
     class="item"
-    *ngFor="let component of components"
+    *ngFor="let component of components" 
     draggable="true"
-    (dragstart)="dragStart($event, component.type)"
-    (click)="addComponent(component.type)">
+    (dragstart)="dragStart($event, component.type)">
+    
 
     {{ component.label }}
 
   </div>
 </div>
+
+<!--*ngFor ts dosyasındaki compenents dizisini sırayla dolaşır her eleman 
+için bu divden 1 tane oluşturulur
+draggable="true"->Bu kutunun normal HTML sürükleme sisteminde sürüklenebilir olduğunu söyler.
+dragStart kullanıcı kutuyu sürüklemeye başladığında çalışır
+component.label ise sürüklenen değeri ekranda gösterir-->

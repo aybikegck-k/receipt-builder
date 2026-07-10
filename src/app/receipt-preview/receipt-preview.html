@@ -5,7 +5,7 @@
 
     <div
       #editorReceipt
-      class="receipt editor-receipt"
+      class="receipt editor-receipt" 
       (dragover)="allowDrop($event)"
       (drop)="dropComponent($event)">
 
@@ -30,7 +30,7 @@
           [style.border-style]="item.borderStyle"
           [style.border-color]="item.borderColor">
 
-          <ng-container *ngIf="item.type === 'logo'; else notLogo">
+          <ng-container *ngIf="item.type === 'Logo'; else notLogo">
             <img
               *ngIf="item.imageUrl; else logoPlaceholder"
               [src]="item.imageUrl"
@@ -98,7 +98,7 @@
           [style.border-style]="item.borderStyle"
           [style.border-color]="item.borderColor">
 
-          <ng-container *ngIf="item.type === 'logo'; else notPreviewLogo">
+          <ng-container *ngIf="item.type === 'Logo'; else notPreviewLogo">
             <img
               *ngIf="item.imageUrl; else logoPreviewPlaceholder"
               [src]="item.imageUrl"
@@ -143,3 +143,14 @@
   </div>
 
 </div>
+
+<!--#editorReceipt Bu elemente Angular içinde bir isim verir.
+TS tarafında şu satır bunu yakalar:
+@ViewChild('editorReceipt') editorReceipt!: ElementRef;
+Böylece TypeScript, tasarım alanının gerçek HTML elementine erişebilir
+
+receipt-item bütün fiş elemanlarının ortak görünümüdür.
+editor-item sadece tasarım alanındaki elemanlara özel davranıştır.
+
+(mousedown)="startMove($event, item)"
+Kullanıcı item’ın üzerine fareyle bastığında çalışır.-->

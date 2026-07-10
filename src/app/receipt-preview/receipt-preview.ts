@@ -9,79 +9,67 @@ import { NgFor, NgIf } from '@angular/common';
   styleUrl: './receipt-preview.css',
 })
 export class ReceiptPreview {
-  @Input() items: any[] = [];
-  @Input() selectedItem: any = null;
+  @Input() items: any[] = []; //App, receiptItems dizisini ReceiptPreviewe gönderiyor
+  @Input() selectedItem: any = null; //appde hangi bileşenin seçili oldugunu receiptpreviewe gönderir
 
-  @Output() itemSelected = new EventEmitter<any>();
-  @Output() componentDropped = new EventEmitter<any>();
+  @Output() itemSelected = new EventEmitter<any>();//Kullanıcı tasarım alanındaki bir bileşene tıklayınca, tıklanan bileşeni App’e gönderir.
+  @Output() componentDropped = new EventEmitter<any>();//Sol panelden bir bileşen tasarım alanına bırakıldığında App’e haber verir.
 
   @ViewChild('editorReceipt') editorReceipt!: ElementRef;
 
-  draggingItem: any = null;
-  offsetX = 0;
-  offsetY = 0;
+  draggingItem: any = null; //şu anda hangi bileşenin taşındıgını tutar
+  offsetX = 0; //bunlar sayesinde bileşen tutuldugu noktadan hareket eder
+  offsetY = 0;//kullanılmazsa kaymaalr olur
 
   allowDrop(event: DragEvent) {
-    event.preventDefault();
-  }
+    event.preventDefault();//bazen tarayıcı bir elementi baska alanın üzerine bırakmaya izin vermiyor
+  }//bu varsayılan bu davranısı engeller ve bırakılabilir hale getirir
   getTotal() {
-  const productItem = this.items.find(
-    item => item.type === 'urunler'
+  const productItem = this.items.find( //
+    item => item.type === 'ÜrÜnler' //items dizisi içinde tipi ürünler olan elemanı bul
   );
 
-  if (!productItem) return 0;
+  if (!productItem) return 0; //yoksa toplam 0
 
-  return productItem.products.reduce(
+  return productItem.products.reduce( //varsa tüm elemanın toplamını hesaplar
     (total: number, product: any) =>
       total + product.quantity * product.price,
-    0
+    0 //toplamaya sıfırdan başanır
   );
 }
 
-  dropComponent(event: DragEvent) {
-    event.preventDefault();
+  dropComponent(event: DragEvent) { //Kullanıcı sol panelden sürüklediği bileşeni tasarım alanına bıraktığında çalışır.
+    event.preventDefault(); //Tarayıcının varsayılan bırakma davranışını engeller.
 
     const type = event.dataTransfer?.getData('componentType');
-
-    if (!type) return;
+//görünmez çantadaki bilgi bırakıldıgı zaman getData(compenentType) ile çantadak bilgiyi geri alıyoruz
+    if (!type) return; //sürüklenen tür bilgisi bulunamadıysa bu 
 
     this.componentDropped.emit({
-      type: type
+      type: type//app e type: logo gönderdi diyelim app bunu alıp addComponent(event) fonksiyonunu çalıştırır 
     });
   }
 
-  selectItem(item: any) {
-    this.itemSelected.emit(item);
+  selectItem(item: any) {//Kullanıcı tasarım alanındaki bir bileşene tıklayınca çalışır.
+    this.itemSelected.emit(item); //tıklanan nesneyi emit(item) ile appe gönderir
   }
 
-  startMove(event: MouseEvent, item: any) {
-    event.preventDefault();
+  startMove(event: MouseEvent, item: any) {//Kullanıcı tasarım alanındaki bir bileşene fareyle bastığında çalışır.
+    event.preventDefault();//Kullanıcı tasarım alanındaki bir bileşene fareyle bastığında çalışır.
 
-    this.selectItem(item);
-    this.draggingItem = item;
+    this.selectItem(item);//Taşımaya başladığımız bileşeni aynı zamanda seçili hale getirir.
+//Yani kullanıcı bir bileşeni tutunca sağ panel de o bileşenin ayarlarını gösterir.
+    this.draggingItem = item;//Şu anda hareket ettirilen bileşeni kaydeder.
 
     const itemElement = event.currentTarget as HTMLElement;
-    const rect = itemElement.getBoundingClientRect();
+    const rect = itemElement.getBoundingClientRect();//Tutulan bileşenin ekrandaki konumunu ve boyutunu alır.
 
     this.offsetX = event.clientX - rect.left;
     this.offsetY = event.clientY - rect.top;
   }
-  selectLogoImage(event: Event, item: any) {
-  const input = event.target as HTMLInputElement;
+ 
 
-  if (!input.files || input.files.length === 0) return;
-
-  const file = input.files[0];
-  const reader = new FileReader();
-
-  reader.onload = () => {
-    item.imageUrl = reader.result as string;
-  };
-
-  reader.readAsDataURL(file);
-}
-
-  @HostListener('document:mousemove', ['$event'])
+  @HostListener('document:mousemove', ['$event']) //fare hareketlerini kontrol eder Bu kontrol olmasaydı kullanıcı sadece fareyi sayfada gezdirirken bile kod sürekli item taşımaya çalışırdı.
   moveItem(event: MouseEvent) {
     if (!this.draggingItem) return;
 
@@ -94,5 +82,10 @@ export class ReceiptPreview {
   @HostListener('document:mouseup')
   stopMove() {
     this.draggingItem = null;
-  }
+  } //taşıma işlemini bitirir sol tuşu buraktıgın an çalışır
 }
+
+//input parent compenentten child compenente veri almak için kullanılır
+//output child compenentten parent compenente haber göndermek için kullanılır.
+//dragover:sürüklenen şey alan üzerinde geziyor
+//drop: kullanıcı fareyi bıraktı

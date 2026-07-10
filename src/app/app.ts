@@ -16,34 +16,35 @@ export class App { //adisyondaki bütün bileşenler ilk hali boş eklendikçe d
   
   selectedItem: any = null; //şuan hangi bileşen seçili basta bir şey seçili olmadıgı için null
 
-  addComponent(event: any) {
-    const type = typeof event === 'string' ? event : event.type;
+  addComponent(event: any) { //sol panelden yeni bileşen eklenince çalışan fonksiyon
+    const type = typeof event === 'string' ? event : event.type; //gelen verinin tipini alıyor
 
-    const newItem = this.createReceiptItem(
+
+  const newItem = this.createReceiptItem( // yeni  bileşen oluşturuluyor
       type,
-      20,
-      this.receiptItems.length * 40 + 20
+      20, //xin konumu yani soldan 20pc 
+      this.receiptItems.length * 40 + 20// ynin konumu yani her yeni bileşen bir öncekinni altına gelsin diye
     );
 
-    this.receiptItems.push(newItem);
-  }
+    this.receiptItems.push(newItem); //yeni oluşan bileşeni adisyon listesine ekler
 
-  getTotal(): number {
+  }
+  getTotal(): number { //ürünlerin toplam fiyatını hesaplayan fonksiyob
 
   const productItem = this.receiptItems.find(
-    x => x.type === 'urunler'
+    x => x.type === 'urunler' //adisyon içindeki ürünler bileşenini bulur
   );
 
-  if (!productItem) return 0;
+  if (!productItem) return 0; //ürünler bileşeni yoksa sıfır döner
 
-  return productItem.products.reduce(
+  return productItem.products.reduce( //ürün listesindeki fiyatları toplamak için reduce kullandık
     (total: number, product: any) =>
-      total + product.quantity * product.price,
+      total + product.quantity * product.price, //her ürün için adet*birim fiyatı toplama eklenir
     0
   );
 
 }
-  createReceiptItem(type: string, x: number, y: number) {
+  createReceiptItem(type: string, x: number, y: number) { //yeni adisyon bileşeni olusturan fonksiyon
     return {
       id: Date.now() + Math.random(),
       type: type,
@@ -51,12 +52,7 @@ export class App { //adisyondaki bütün bileşenler ilk hali boş eklendikçe d
       imageUrl: '',
 logoWidth: 120,
 logoHeight: 80,
-products: type === 'urunler'
-  ? [
-      { name: 'Kola', quantity: 1, price: 50 },
-      { name: 'Fanta', quantity: 1, price: 50 }
-    ]
-  : [],
+products: type === 'urunler' ? [] : undefined,
       
 
       fontSize: 16,
@@ -76,7 +72,8 @@ products: type === 'urunler'
     };
   }
 
-  selectItem(item: any) { //bu fonksiyon ReceiptPreview den seçili item bilgisini App'e kaydediyor.yani kullanıcı tasarım alanında tarihe tıklarsa app artık seçili item ın tarih oldugunu biliyor.
+  selectItem(item: any) { //bu fonksiyon ReceiptPreview den seçili item bilgisini App'e kaydediyor.yani kullanıcı tasarım alanında tarihe tıklarsa app artık seçili item ın tarih oldugunu biliyor. ve
+    //sağdaki panel hangi bileşeni düzenleyeceğini bilir
     this.selectedItem = item;
   }
 
@@ -93,14 +90,14 @@ products: type === 'urunler'
   //placeholder yazısını belirleme işini ayrı bir fonksiyonda aldık böylece ekleme işiyle metin belirleme işi birbiirne karışmadı
   getPlaceholderText(type: string): string {
     switch(type) {
-      case 'logo': return 'Logonuz Buraya Gelecek';
-      case 'restoran': return 'Restoran Adınız';
-      case 'tarih': return new Date().toLocaleDateString();
-      case 'masa': return 'Masa No: 01';
-      case 'garson': return 'Garson: İsim';
-      case 'urunler': return 'Ürün Listesi';
-      case 'toplam': return 'Toplam: 0.00 TL';
-      case 'dipnot': return 'Afiyet olsun!';
+      case 'Logo': return 'Logonuz Buraya Gelecek';
+      case 'Restoran': return 'Restoran Adınız';
+      case 'Tarih': return new Date().toLocaleDateString();
+      case 'Masa': return 'Masa No: 01';
+      case 'Garson': return 'Garson: İsim';
+      case 'ÜrÜnler': return 'Ürün Listesi';
+      case 'Toplam': return 'Toplam: 0.00 TL';
+      case 'Dipnot': return 'Afiyet olsun!';
       default: return 'Yeni Öğe';
     }
   }

@@ -10,24 +10,21 @@ import { NgFor } from '@angular/common';
 })
 export class ComponentPool {
 
-  @Output() addComponentEvent = new EventEmitter<string>();
-
   components = [
-    { type: 'logo', label: '🍽️ Logo' },
-    { type: 'restoran', label: '🏪 Restoran Adı' },
-    { type: 'tarih', label: '📅 Tarih' },
-    { type: 'masa', label: '🪑 Masa' },
-    { type: 'garson', label: '👨‍🍳 Garson' },
-    { type: 'urunler', label: '🍕 Ürünler' },
-    { type: 'toplam', label: '💰 Toplam' },
-    { type: 'dipnot', label: '📝 Dipnot' },
+    { type: 'Logo', label: '🍽️ Logo' },
+    { type: 'Restoran', label: '🏪 Restoran Adı' },
+    { type: 'Tarih', label: '📅 Tarih' },
+    { type: 'Masa', label: '🪑 Masa' },
+    { type: 'Garson', label: '👨‍🍳 Garson' },
+    { type: 'ÜrÜnler', label: '🍕 Ürünler' },
+    { type: 'Toplam', label: '💰 Toplam' },
+    { type: 'Dipnot', label: '📝 Dipnot' },
   ];
 
   dragStart(event: DragEvent, type: string) {
     event.dataTransfer?.setData('componentType', type);
-  }
+  } //event ->sürükleme olayı ->dataTransfer süürklerken elindeki görünmez çanta bu çantanın içine bilgi koymak lazım
+  //setData() çantanın içine veri koy demek
 
-  addComponent(type: string) {
-    this.addComponentEvent.emit(type);
-  }
+ 
 }

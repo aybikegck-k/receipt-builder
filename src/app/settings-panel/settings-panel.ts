@@ -32,9 +32,14 @@ getProductsTotal(): number {
       total + (product.quantity * product.price),
     0
   );
+} //aşağıdakiyle aynı mantık ürünler dizisini tek bir toplam değere indirger
+/*let total = 0;
+for (const product of products) {
+  total += product.quantity * product.price;
 }
+return total;*/
 
-deleteProduct(index: number) {
+deleteProduct(index: number) {//belirli ürün satırını siler
   if (!this.selectedItem) return;
 
   this.selectedItem.products.splice(index, 1);
@@ -43,18 +48,20 @@ deleteProduct(index: number) {
   selectLogoImage(event: Event) {
     if (!this.selectedItem) return;
 
-    const input = event.target as HTMLInputElement;
+    const input = event.target as HTMLInputElement;//Dosya seçme olayını oluşturan HTML inputunu alır.
 
     if (!input.files || input.files.length === 0) return;
 
     const file = input.files[0];
-    const reader = new FileReader();
+    const reader = new FileReader(); //Tarayıcının dosya okuma aracını oluşturur.
+//Bilgisayardaki görseli doğrudan Angular değişkenine koyamayız. Önce tarayıcının okuyabileceği bir formata çevirmeliyiz.
 
-    reader.onload = () => {
-      this.selectedItem.imageUrl = reader.result as string;
+    reader.onload = () => {//dosya okuma bittiğinde bu fonk çalışır
+      this.selectedItem.imageUrl = reader.result as string;//Okunan görselin sonucunu seçili logo bileşeninin imageUrl alanına koyar.
+
     };
 
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(file); //seçilen dosyayı Data URL biçiminde okumya başlar
   }
 
   deleteSelectedItem() { //kullanıcı sile basınca seetingspanel app e sil diyor

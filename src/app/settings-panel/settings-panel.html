@@ -3,10 +3,10 @@
 <div *ngIf="selectedItem; else noSelection">
   <h3>Seçili Bileşen</h3>
 
-  <p><strong>Tip:</strong> {{ selectedItem.type }}</p>
+  <p><strong></strong> {{ selectedItem.type }}</p>
 
   <!-- LOGO AYARLARI -->
-  <div *ngIf="selectedItem.type === 'logo'">
+  <div *ngIf="selectedItem.type === 'Logo'">
     <label>Logo Seç:</label>
     <input type="file" accept="image/*" (change)="selectLogoImage($event)">
 
@@ -89,7 +89,7 @@
 </div>
 
   <!-- NORMAL YAZI AYARLARI -->
-  <div *ngIf="selectedItem.type !== 'logo' && selectedItem.type !== 'urunler'">
+  <div *ngIf="selectedItem.type !== 'Logo' && selectedItem.type !== 'ÜrÜnler'">
     <label>Metin:</label>
     <input type="text" [(ngModel)]="selectedItem.text">
 
@@ -152,3 +152,9 @@
 <ng-template #noSelection>
   <p>Bileşen seçildiğinde ayarlar burada görünecek.</p>
 </ng-template>
+<!--*ngIf-> koşula göre göster/gizle
+*ngFor-> diziyi dolaş
+[(ngModel)]-> input ile değişkeni birbirine bağla
+()->butona basınca TS fonksiyonunu çalıştır
+(change)->dosya seçilince çalış
+{{}}->TS dedki değeri HTML e yazdır-->
