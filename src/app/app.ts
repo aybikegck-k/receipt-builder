@@ -32,7 +32,7 @@ export class App { //adisyondaki bütün bileşenler ilk hali boş eklendikçe d
   getTotal(): number { //ürünlerin toplam fiyatını hesaplayan fonksiyob
 
   const productItem = this.receiptItems.find(
-    x => x.type === 'urunler' //adisyon içindeki ürünler bileşenini bulur
+    x => x.type === 'Ürünler' //adisyon içindeki ürünler bileşenini bulur
   );
 
   if (!productItem) return 0; //ürünler bileşeni yoksa sıfır döner
@@ -44,33 +44,37 @@ export class App { //adisyondaki bütün bileşenler ilk hali boş eklendikçe d
   );
 
 }
-  createReceiptItem(type: string, x: number, y: number) { //yeni adisyon bileşeni olusturan fonksiyon
-    return {
-      id: Date.now() + Math.random(),
-      type: type,
-      text: this.getPlaceholderText(type),
-      imageUrl: '',
-logoWidth: 120,
-logoHeight: 80,
-products: type === 'urunler' ? [] : undefined,
-      
+createReceiptItem(type: string, x: number, y: number) {
+  return {
+    id: Date.now() + Math.random(),
+    type: type,
 
-      fontSize: 16,
-      bold: false,
-      italic: false,
-      underline: false,
-      align: 'left',
-      fontFamily: 'serif',
-      color: '#000000',
-      backgroundColor: '#ffffff',
-      borderWidth: 0,
-      borderColor: '#000000',
-      borderStyle: 'solid',
+    text: type === 'Toplam'
+      ? `Toplam: ${this.getTotal().toFixed(2)} TL`
+      : this.getPlaceholderText(type),
 
-      x: x,
-      y: y
-    };
-  }
+    imageUrl: '',
+    logoWidth: 120,
+    logoHeight: 80,
+
+    products: type === 'Ürünler' ? [] : undefined,
+
+    fontSize: 16,
+    bold: false,
+    italic: false,
+    underline: false,
+    align: 'left',
+    fontFamily: 'serif',
+    color: '#000000',
+    backgroundColor: '#ffffff',
+    borderWidth: 0,
+    borderColor: '#000000',
+    borderStyle: 'solid',
+
+    x: x,
+    y: y
+  };
+}
 
   selectItem(item: any) { //bu fonksiyon ReceiptPreview den seçili item bilgisini App'e kaydediyor.yani kullanıcı tasarım alanında tarihe tıklarsa app artık seçili item ın tarih oldugunu biliyor. ve
     //sağdaki panel hangi bileşeni düzenleyeceğini bilir

@@ -24,17 +24,23 @@ export class ReceiptPreview {
   allowDrop(event: DragEvent) {
     event.preventDefault();//bazen tarayıcı bir elementi baska alanın üzerine bırakmaya izin vermiyor
   }//bu varsayılan bu davranısı engeller ve bırakılabilir hale getirir
-  getTotal() {
-  const productItem = this.items.find( //
-    item => item.type === 'Ürünler' //items dizisi içinde tipi ürünler olan elemanı bul
+getTotal(): number {
+  const productItem = this.items.find(
+    item => item.type === 'Ürünler'
   );
 
-  if (!productItem) return 0; //yoksa toplam 0
+  if (!productItem || !Array.isArray(productItem.products)) {
+    return 0;
+  }
 
-  return productItem.products.reduce( //varsa tüm elemanın toplamını hesaplar
-    (total: number, product: any) =>
-      total + product.quantity * product.price,
-    0 //toplamaya sıfırdan başanır
+  return productItem.products.reduce(
+    (total: number, product: any) => {
+      const quantity = Number(product.quantity) || 0;
+      const price = Number(product.price) || 0;
+
+      return total + quantity * price;
+    },
+    0
   );
 }
 
