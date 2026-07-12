@@ -12,7 +12,7 @@ import { SettingsPanel } from './settings-panel/settings-panel';
   styleUrl: './app.css'
 })
 export class App { //adisyondaki bütün bileşenler ilk hali boş eklendikçe dolacak
-  receiptItems: any[] = []; //
+  receiptItems: any[] = []; //adisyon tasarım alanındaki bütün bileşenleri tutar
   
   selectedItem: any = null; //şuan hangi bileşen seçili basta bir şey seçili olmadıgı için null
 
@@ -20,7 +20,7 @@ export class App { //adisyondaki bütün bileşenler ilk hali boş eklendikçe d
     const type = typeof event === 'string' ? event : event.type; //gelen verinin tipini alıyor
 
 
-  const newItem = this.createReceiptItem( // yeni  bileşen oluşturuluyor
+  const newItem = this.createReceiptItem( // createReceiptItm fonksiyonuna 3 bilgi gönderiliyor
       type,
       20, //xin konumu yani soldan 20pc 
       this.receiptItems.length * 40 + 20// ynin konumu yani her yeni bileşen bir öncekinni altına gelsin diye
@@ -53,9 +53,9 @@ createReceiptItem(type: string, x: number, y: number) {
       ? `Toplam: ${this.getTotal().toFixed(2)} TL`
       : this.getPlaceholderText(type),
 
-    imageUrl: '',
-    logoWidth: 120,
-    logoHeight: 80,
+    imageUrl: type === 'Logo' ? '' : undefined,
+logoWidth: type === 'Logo' ? 120 : undefined,
+logoHeight: type === 'Logo' ? 80 : undefined,
 
     products: type === 'Ürünler' ? [] : undefined,
 
