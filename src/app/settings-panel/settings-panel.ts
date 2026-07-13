@@ -22,7 +22,7 @@ export class SettingsPanel {
   }
 
   this.selectedItem.products.push({
-    name: 'Yeni Ürün',
+    name: 'Ürün Ekle',
     quantity: 1,
     price: 0
   });
@@ -75,6 +75,7 @@ deleteProduct(index: number) {//belirli ürün satırını siler
 }
 
 
-//emit dışarıya haber gönder demek yani burada yazdıgımız fonksion diyor ki app kullanıcı bir yazı boyutu seçti
+
 //akış şu -> kullanıcı->SeyyingPanel->selectedFontSize("large")->emit("large")->App->changeFontSize("large")->fontSize="large"-->ReceiptPreview->yazılar büyür
 //Silme işlemini SettingsPanel'de yapmadım çünkü receiptItems dizisi App componentinde tutuluyor. SettingsPanel sadece deleteItem eventi ile App'e haber veriyor. Asıl silme işlemi state'in bulunduğu App componentinde gerçekleştiriliyor.
+//döndürme, sipariş no ,adres,telefon qr kod,pdf

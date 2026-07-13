@@ -79,9 +79,9 @@ getTotal(): number {
   moveItem(event: MouseEvent) {
     if (!this.draggingItem) return;
 
-    const area = this.editorReceipt.nativeElement.getBoundingClientRect();//tasarım alanının sayfadaki başlangıc noktasını bulur
+    const area = this.editorReceipt.nativeElement.getBoundingClientRect();
 
-    this.draggingItem.x = event.clientX - area.left - this.offsetX; //bunlar bileşenin gerçek konumu günceller tasarım alanı içinde değiştikce
+    this.draggingItem.x = event.clientX - area.left - this.offsetX;
     this.draggingItem.y = event.clientY - area.top - this.offsetY;
   }
 
