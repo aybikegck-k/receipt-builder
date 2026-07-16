@@ -1,9 +1,15 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Navbar } from './navbar/navbar'; 
 import { ComponentPool } from './component-pool/component-pool';
 import { ReceiptPreview } from './receipt-preview/receipt-preview';
 import { SettingsPanel } from './settings-panel/settings-panel';
 
+interface Product {
+  name: string;
+  quantity: number;
+  price: number;
+}
 @Component({ //bundan sonra yazılacak claasın angular componenti olduğunu söylüyor
   selector: 'app-root', //<app-root></app-root> htmlde bunu gördüğünde App componentini çalıştır
   standalone: true,
@@ -16,6 +22,48 @@ export class App { //adisyondaki bütün bileşenler ilk hali boş eklendikçe d
   
   selectedItem: any = null; //şuan hangi bileşen seçili basta bir şey seçili olmadıgı için null
 
+products: Product[] = [];
+
+constructor(private http: HttpClient) {
+  this.loadProducts();
+}
+
+loadProducts(): void {
+  this.http.get<Product[]>('/data/products.json').subscribe({
+    next: (data) => {
+      this.products = data;
+
+      this.updateProductsComponent();
+      this.updateTotalComponent();
+
+      console.log('JSON ürünleri yüklendi:', this.products);
+    },
+
+    error: (error) => {
+      console.error('Ürünler JSON dosyasından yüklenemedi:', error);
+    }
+  });
+}
+
+updateProductsComponent(): void {
+  const productItem = this.receiptItems.find(
+    item => item.type === 'Ürünler'
+  );
+
+  if (productItem) {
+    productItem.products = [...this.products];
+  }
+}
+
+updateTotalComponent(): void {
+  const totalItem = this.receiptItems.find(
+    item => item.type === 'Toplam'
+  );
+
+  if (totalItem) {
+    totalItem.text = `Toplam: ${this.getTotal().toFixed(2)} TL`;
+  }
+}
   addComponent(event: any) { //sol panelden yeni bileşen eklenince çalışan fonksiyon
     const type = typeof event === 'string' ? event : event.type; //gelen verinin tipini alıyor
 
@@ -27,7 +75,7 @@ export class App { //adisyondaki bütün bileşenler ilk hali boş eklendikçe d
     );
 
     this.receiptItems.push(newItem); //yeni oluşan bileşeni adisyon listesine ekler
-
+    this.updateTotalComponent();
   }
   getTotal(): number { //ürünlerin toplam fiyatını hesaplayan fonksiyob
 
@@ -57,7 +105,7 @@ createReceiptItem(type: string, x: number, y: number) {
     logoWidth: 120,
     logoHeight: 80,
 
-    products: type === 'Ürünler' ? [] : undefined,
+    products: type === 'Ürünler' ? [...this.products] : undefined,
 
     fontSize: 16,
     bold: false,
@@ -66,7 +114,7 @@ createReceiptItem(type: string, x: number, y: number) {
     align: 'left',
     fontFamily: 'serif',
     color: '#000000',
-    backgroundColor: '#ffffff',
+    backgroundColor: 'transparent',
     borderWidth: 0,
     borderColor: '#000000',
     borderStyle: 'solid',
@@ -132,3 +180,20 @@ createReceiptItem(type: string, x: number, y: number) {
 
 //app çocuklatra haber gönderiorsa html -> []->child->input    gösterilecek veya kullanılacak bilgi varsa input bir olay olunca output
 //app çocuklardan haber alıyorsa output-> emit->html->app fonksiyonu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

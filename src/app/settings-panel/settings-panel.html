@@ -19,61 +19,20 @@
     <button class="delete-btn" (click)="deleteSelectedItem()">Sil</button>
   </div>
 
- <!-- ÜRÜNLER AYARLARI -->
+<!-- ÜRÜNLER AYARLARI -->
 <div *ngIf="selectedItem.type === 'Ürünler'">
   <h4>Ürünler</h4>
 
-  <table class="product-table">
-    <thead>
-      <tr>
-        <th>Ürün</th>
-        <th>Adet</th>
-        <th>Fiyat</th>
-        <th></th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let product of selectedItem.products; let i = index">
-        <td>
-          <input type="text" [(ngModel)]="product.name">
-        </td>
-
-        <td>
-          <input type="number" min="1" [(ngModel)]="product.quantity">
-        </td>
-
-        <td>
-          <input type="number" min="0" [(ngModel)]="product.price">
-        </td>
-
-        <td>
-          <button type="button" class="remove-btn" (click)="deleteProduct(i)">
-            ✕
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <button type="button" class="add-btn" (click)="addProduct()">
-    + Ürün Ekle
-  </button>
-
-  <hr>
-
- <div class="total-panel">
-    <span>Hesaplanan Toplam</span>
-
-    <div class="grand-total">
-        {{ getProductsTotal() }} TL
-    </div>
-</div>
-
-  <hr>
+  <p class="info-text">
+    Ürün bilgileri products.json dosyasından otomatik olarak alınmaktadır.
+  </p>
 
   <label>Yazı Boyutu:</label>
-  <input type="number" [(ngModel)]="selectedItem.fontSize">
+  <input
+    type="number"
+    min="8"
+    [(ngModel)]="selectedItem.fontSize"
+  >
 
   <label>Yazı Tipi:</label>
   <select [(ngModel)]="selectedItem.fontFamily">
@@ -83,7 +42,32 @@
     <option value="cursive">Cursive</option>
   </select>
 
-  <button class="delete-btn" (click)="deleteSelectedItem()">
+  <label>
+    <input
+      type="checkbox"
+      [(ngModel)]="selectedItem.bold"
+    >
+    Kalın
+  </label>
+
+  <label>
+    <input
+      type="checkbox"
+      [(ngModel)]="selectedItem.italic"
+    >
+    İtalik
+  </label>
+
+  <label>Yazı Rengi:</label>
+  <input
+    type="color"
+    [(ngModel)]="selectedItem.color"
+  >
+
+  <button
+    class="delete-btn"
+    (click)="deleteSelectedItem()"
+  >
     Sil
   </button>
 </div>

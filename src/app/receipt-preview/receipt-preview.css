@@ -27,26 +27,30 @@ h2 {
   font-weight: 600;
 }
 
-.receipt{
-    width:240px;
-    min-height:550px;
-
-    background:white;
-    border-radius:4px;
-    border:1px solid #ddd;
-    box-shadow:0 4px 15px rgba(0,0,0,.12);
-    position:relative;
+.receipt {
+  width: 240px;
+  min-height: 550px;
+  border-radius: 4px;
+  position: relative;
 }
+
+/* Tasarım alanı */
 .editor-receipt {
+  background-color: transparent;
   border: 2px dashed #afd3f9;
+
   background-image:
     linear-gradient(#e5e5e5 1px, transparent 1px),
     linear-gradient(90deg, #e5e5e5 1px, transparent 1px);
- background-size:15px 15px;
+
+  background-size: 15px 15px;
 }
 
+/* Önizleme */
 .final-receipt {
+  background: white;
   border: 2px solid #ddd;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, .12);
 }
 
 .editor-item,
@@ -67,39 +71,36 @@ h2 {
 
 .receipt-item p {
   margin: 0;
+  white-space: pre-line;
 }
 
 .preview-item {
-  border:#233c57 ;
-  
+  /* İstersen boş bırakabilirsin */
 }
 
 .receipt-item.selected-item {
   border: 3px solid #afd3f9 !important;
-  background-color: #dceeff !important;}
-  
+  background-color: rgba(175, 211, 249, 0.25) !important;
+}
 
-  .logo-image {
+.logo-image {
   object-fit: contain;
   display: block;
 }
-.receipt-item p {
-  margin: 0;
-  white-space: pre-line;
-}
+
 .product-list {
   min-width: 180px;
 }
 
-.product-row{
-    display:grid;
-    grid-template-columns:2fr 1fr 1fr;
-    gap:8px;
-    align-items:center;
+.product-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 8px;
+  align-items: center;
 }
 
-.product-row span:last-child{
-    text-align:right;
+.product-row span:last-child {
+  text-align: right;
 }
 
 .title-row {
