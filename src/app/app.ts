@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Navbar } from './navbar/navbar';
@@ -34,13 +34,81 @@ interface ReceiptData {
   styleUrl: './app.css'
 })
 export class App {
-
+@ViewChild('fileInput')
+fileInput!: ElementRef<HTMLInputElement>;
   // Tasarım alanındaki bütün bileşenleri tutar.
   receiptItems: any[] = [];
 
   // Tasarım alanında seçili olan bileşeni tutar.
   selectedItem: any = null;
+saveTemplate(): void {
+  const templateJson = JSON.stringify(this.receiptItems, null, 2);
 
+  const blob = new Blob(
+    [templateJson],
+    { type: 'application/json' }
+  );
+
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'adisyon-sablonu.json';
+
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
+loadTemplate(): void {
+  this.fileInput.nativeElement.click();
+}
+onFileSelected(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+
+  if (!file) {
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    try {
+      const jsonText = reader.result as string;
+      const loadedItems = JSON.parse(jsonText);
+
+      if (!Array.isArray(loadedItems)) {
+        alert('Seçilen dosya geçerli bir şablon değil.');
+        return;
+      }
+
+      this.receiptItems = loadedItems;
+      this.selectedItem = null;
+
+      // Ürünler şablonda varsa güncel ürünleri receipt-data.json’dan verir.
+      this.updateProductsComponent();
+
+      // Toplamı güncel ürünlere göre yeniden hesaplar.
+      this.updateTotalComponent();
+
+      console.log('Şablon başarıyla yüklendi:', this.receiptItems);
+    } catch (error) {
+      console.error('JSON dosyası okunamadı:', error);
+      alert('JSON dosyası okunamadı veya dosya biçimi hatalı.');
+    }
+
+    // Aynı dosyanın tekrar seçilebilmesi için input temizlenir.
+    input.value = '';
+  };
+
+  reader.onerror = () => {
+    console.error('Dosya okunurken hata oluştu.');
+    alert('Dosya okunurken bir hata oluştu.');
+    input.value = '';
+  };
+
+  reader.readAsText(file);
+}
   // JSON dosyasından gelen bütün adisyon verileri.
   receiptData: ReceiptData = {
     restaurantName: '',

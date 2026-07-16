@@ -1,7 +1,20 @@
 <nav class="navbar">
-  <!-- Sol taraf: Logo ve Başlık -->
+
+  <!-- Sol taraf -->
   <div class="nav-left">
     <img src="logo.png" alt="Logo" class="logo">
     <h2>Adisyon Builder</h2>
   </div>
+
+  <!-- Sağ taraf -->
+<div class="nav-right">
+  <button class="save-btn" (click)="save()">
+    Şablonu Kaydet
+  </button>
+
+ <button class="load-btn" (click)="load()">
+  Şablonu Yükle
+</button>
+</div>
+
 </nav>

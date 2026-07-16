@@ -2,8 +2,9 @@
     background: #ffffff; /* Siyahı kaldırdık, beyaz oldu */
     padding: 10px 20px;
     border-bottom: 1px solid #e0e0e0; /* Hafif bir çizgi ile altını belirginleştirdik */
-    display: flex;
-    align-items: center;
+   display: flex;
+justify-content: space-between;
+align-items: center;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Çok hafif bir derinlik */
 }
 
@@ -23,4 +24,45 @@
     font-size: 20px;
     color: #333; /* Yazıyı siyah/gri yaptık */
     font-weight: 600;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.save-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: #1976d2;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.save-btn:hover {
+    background-color: #1565c0;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.load-btn {
+  padding: 8px 16px;
+  border: 1px solid #1976d2;
+  border-radius: 6px;
+  background-color: white;
+  color: #1976d2;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.load-btn:hover {
+  background-color: #f0f7ff;
 }

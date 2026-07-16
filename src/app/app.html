@@ -1,5 +1,16 @@
 
-<app-navbar></app-navbar> <!--angular arkada bütün navbarı getiriyor-->
+<app-navbar
+  (saveTemplate)="saveTemplate()"
+  (loadTemplate)="loadTemplate()">
+</app-navbar>
+
+<input
+  #fileInput
+  type="file"
+  accept=".json"
+  style="display: none"
+  (change)="onFileSelected($event)">
+
 
 <div class="container">
  <app-component-pool
