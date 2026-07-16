@@ -75,15 +75,34 @@ getTotal(): number {
   }
  
 
-  @HostListener('document:mousemove', ['$event']) //fare hareketlerini kontrol eder Bu kontrol olmasaydı kullanıcı sadece fareyi sayfada gezdirirken bile kod sürekli item taşımaya çalışırdı.
-  moveItem(event: MouseEvent) {
-    if (!this.draggingItem) return;
+  @HostListener('document:mousemove', ['$event'])
+moveItem(event: MouseEvent) {
+  if (!this.draggingItem || !this.editorReceipt) return;
 
-    const area = this.editorReceipt.nativeElement.getBoundingClientRect();
+  const receiptElement = this.editorReceipt.nativeElement as HTMLElement;
+  const area = receiptElement.getBoundingClientRect();
 
-    this.draggingItem.x = event.clientX - area.left - this.offsetX;
-    this.draggingItem.y = event.clientY - area.top - this.offsetY;
-  }
+  const itemElement = document.getElementById(
+    'receipt-item-' + this.draggingItem.id
+  );
+
+  if (!itemElement) return;
+
+  const itemWidth = itemElement.offsetWidth;
+  const itemHeight = itemElement.offsetHeight;
+
+  let newX = event.clientX - area.left - this.offsetX;
+  let newY = event.clientY - area.top - this.offsetY;
+
+  const maxX = receiptElement.clientWidth - itemWidth;
+  const maxY = receiptElement.clientHeight - itemHeight;
+
+  newX = Math.max(0, Math.min(newX, maxX));
+  newY = Math.max(0, Math.min(newY, maxY));
+
+  this.draggingItem.x = newX;
+  this.draggingItem.y = newY;
+}
 
   @HostListener('document:mouseup')
   stopMove() {

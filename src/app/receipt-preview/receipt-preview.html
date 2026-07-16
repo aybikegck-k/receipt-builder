@@ -9,13 +9,15 @@
       (dragover)="allowDrop($event)"
       (drop)="dropComponent($event)">
 
-      <div
-        *ngFor="let item of items"
-        class="receipt-item editor-item"
-        [class.selected-item]="selectedItem?.id === item.id"
-        [style.left.px]="item.x"
-        [style.top.px]="item.y"
-        (mousedown)="startMove($event, item)">
+   <div
+  *ngFor="let item of items"
+  class="receipt-item"
+  [id]="'receipt-item-' + item.id"
+    [class.selected]="selectedItem?.id === item.id"
+  [style.left.px]="item.x"
+  [style.top.px]="item.y"
+  (mousedown)="startMove($event, item)"
+>
 
         <div
           [style.font-size.px]="item.fontSize"

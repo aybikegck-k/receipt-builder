@@ -45,6 +45,10 @@ h2 {
 
   background-size: 15px 15px;
 }
+.editor-receipt {
+  position: relative;
+  overflow: hidden;
+}
 
 /* Önizleme */
 .final-receipt {
@@ -73,14 +77,13 @@ h2 {
   margin: 0;
   white-space: pre-line;
 }
-
-.preview-item {
-  /* İstersen boş bırakabilirsin */
+.receipt-item {
+  position: absolute;
+  box-sizing: border-box;
 }
-
-.receipt-item.selected-item {
-  border: 3px solid #afd3f9 !important;
-  background-color: rgba(175, 211, 249, 0.25) !important;
+.receipt-item.selected {
+  border: 2px dashed #4da3ff;
+  border-radius: 4px;
 }
 
 .logo-image {

@@ -5,19 +5,17 @@
 
   <p><strong></strong> {{ selectedItem.type }}</p>
 
-  <!-- LOGO AYARLARI -->
-  <div *ngIf="selectedItem.type === 'Logo'">
-    <label>Logo Seç:</label>
-    <input type="file" accept="image/*" (change)="selectLogoImage($event)">
+ <div *ngIf="selectedItem.type === 'Logo'">
 
-    <label>Logo Genişliği:</label>
-    <input type="number" [(ngModel)]="selectedItem.logoWidth">
+  <label>Logo Genişliği:</label>
+  <input type="number" [(ngModel)]="selectedItem.logoWidth">
 
-    <label>Logo Yüksekliği:</label>
-    <input type="number" [(ngModel)]="selectedItem.logoHeight">
+  <label>Logo Yüksekliği:</label>
+  <input type="number" [(ngModel)]="selectedItem.logoHeight">
 
-    <button class="delete-btn" (click)="deleteSelectedItem()">Sil</button>
-  </div>
+  <button class="delete-btn" (click)="deleteSelectedItem()">Sil</button>
+
+</div>
 
 <!-- ÜRÜNLER AYARLARI -->
 <div *ngIf="selectedItem.type === 'Ürünler'">
@@ -74,9 +72,7 @@
 
   <!-- NORMAL YAZI AYARLARI -->
   <div *ngIf="selectedItem.type !== 'Logo' && selectedItem.type !== 'Ürünler'">
-    <label>Metin:</label>
-    <input type="text" [(ngModel)]="selectedItem.text">
-
+  
     <label>Yazı Boyutu:</label>
     <input type="number" [(ngModel)]="selectedItem.fontSize">
 

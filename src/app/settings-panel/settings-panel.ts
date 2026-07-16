@@ -14,23 +14,7 @@ export class SettingsPanel {
 
   @Output() deleteItem = new EventEmitter<void>();
 
-  selectLogoImage(event: Event): void {
-    if (!this.selectedItem) return;
-
-    const input = event.target as HTMLInputElement;
-
-    if (!input.files || input.files.length === 0) return;
-
-    const file = input.files[0];
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      this.selectedItem.imageUrl = reader.result as string;
-    };
-
-    reader.readAsDataURL(file);
-  }
-
+ 
   deleteSelectedItem(): void {
     this.deleteItem.emit();
   }
