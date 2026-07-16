@@ -19,11 +19,9 @@
 
 <!-- ÜRÜNLER AYARLARI -->
 <div *ngIf="selectedItem.type === 'Ürünler'">
-  <h4>Ürünler</h4>
+  
 
-  <p class="info-text">
-    Ürün bilgileri products.json dosyasından otomatik olarak alınmaktadır.
-  </p>
+  
 
   <label>Yazı Boyutu:</label>
   <input
@@ -56,11 +54,26 @@
     İtalik
   </label>
 
+
   <label>Yazı Rengi:</label>
-  <input
-    type="color"
-    [(ngModel)]="selectedItem.color"
-  >
+    <input type="color" [(ngModel)]="selectedItem.color">
+
+    <label>Arka Plan Rengi:</label>
+    <input type="color" [(ngModel)]="selectedItem.backgroundColor">
+
+    <label>Kenarlık Kalınlığı:</label>
+    <input type="number" min="0" [(ngModel)]="selectedItem.borderWidth">
+
+    <label>Kenarlık Rengi:</label>
+    <input type="color" [(ngModel)]="selectedItem.borderColor">
+
+    <label>Kenarlık Tipi:</label>
+    <select [(ngModel)]="selectedItem.borderStyle">
+      <option value="solid">Solid</option>
+      <option value="dashed">Dashed</option>
+      <option value="dotted">Dotted</option>
+    </select>
+
 
   <button
     class="delete-btn"

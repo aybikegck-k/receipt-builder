@@ -44,17 +44,47 @@ getTotal(): number {
   );
 }
 
-  dropComponent(event: DragEvent) { //Kullanıcı sol panelden sürüklediği bileşeni tasarım alanına bıraktığında çalışır.
-    event.preventDefault(); //Tarayıcının varsayılan bırakma davranışını engeller.
+dropComponent(event: DragEvent) {
+  event.preventDefault();
 
-    const type = event.dataTransfer?.getData('componentType');
-//görünmez çantadaki bilgi bırakıldıgı zaman getData(compenentType) ile çantadak bilgiyi geri alıyoruz
-    if (!type) return; //sürüklenen tür bilgisi bulunamadıysa bu 
+  const type = event.dataTransfer?.getData('componentType');
 
-    this.componentDropped.emit({
-      type: type//app e type: logo gönderdi diyelim app bunu alıp addComponent(event) fonksiyonunu çalıştırır 
-    });
+  if (!type) return;
+
+  const area =
+    this.editorReceipt.nativeElement.getBoundingClientRect();
+
+  const dropX = event.clientX - area.left;
+  const dropY = event.clientY - area.top;
+
+  let itemWidth = 100;
+  let itemHeight = 30;
+
+  if (type === 'Logo') {
+    itemWidth = 120;
+    itemHeight = 80;
   }
+
+  if (type === 'Ürünler') {
+    itemWidth = 210;
+    itemHeight = 180;
+  }
+
+  let x = dropX - itemWidth / 2;
+let y = dropY - itemHeight / 2;
+
+const maxX = area.width - itemWidth;
+const maxY = area.height - itemHeight;
+
+x = Math.max(0, Math.min(x, maxX));
+y = Math.max(0, Math.min(y, maxY));
+
+  this.componentDropped.emit({
+    type: type,
+    x: x,
+    y: y
+  });
+}
 
   selectItem(item: any) {//Kullanıcı tasarım alanındaki bir bileşene tıklayınca çalışır.
     this.itemSelected.emit(item); //tıklanan nesneyi emit(item) ile appe gönderir

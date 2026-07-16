@@ -104,24 +104,26 @@ export class App {
     }
   }
 
-  // Sol panelden yeni bir bileşen eklenince çalışır.
-  addComponent(event: any): void {
-    const type =
-      typeof event === 'string'
-        ? event
-        : event.type;
+ // Sol panelden yeni bir bileşen eklenince çalışır.
+addComponent(event: any): void {
+  const type =
+    typeof event === 'string'
+      ? event
+      : event.type;
 
-    const newItem = this.createReceiptItem(
-      type,
-      20,
-      this.receiptItems.length * 40 + 20
-    );
+  const x = event.x ?? 20;
+  const y = event.y ?? this.receiptItems.length * 40 + 20;
 
-    this.receiptItems.push(newItem);
+  const newItem = this.createReceiptItem(
+    type,
+    x,
+    y
+  );
 
-    // Ürünler eklendikten sonra Toplam bileşeni varsa yeniden hesaplanır.
-    this.updateTotalComponent();
-  }
+  this.receiptItems.push(newItem);
+
+  this.updateTotalComponent();
+}
 
   // Ürünlerin toplam fiyatını hesaplar.
   getTotal(): number {
