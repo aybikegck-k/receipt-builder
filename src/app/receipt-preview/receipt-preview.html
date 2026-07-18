@@ -1,24 +1,48 @@
 <div class="preview-wrapper">
 
+  <!-- TASARIM ALANI -->
   <div class="editor-section">
     <h2>Fiş Tasarımı</h2>
 
     <div
       #editorReceipt
-      class="receipt editor-receipt" 
+      class="receipt editor-receipt"
       (dragover)="allowDrop($event)"
       (drop)="dropComponent($event)">
 
-   <div
-  *ngFor="let item of items"
-  class="receipt-item"
-  [id]="'receipt-item-' + item.id"
-    [class.selected]="selectedItem?.id === item.id"
-  [style.left.px]="item.x"
-  [style.top.px]="item.y"
-  (mousedown)="startMove($event, item)"
->
+      <!--
+        items dizisindeki bütün bileşenler tek tek oluşturulur.
 
+        receipt-item:
+        Fişte bulunan Logo, Restoran, Tarih, Ürünler gibi
+        bütün bileşenlerin ortak dış kutusudur.
+
+        [style.left.px] ve [style.top.px]:
+        Bileşenin fiş üzerindeki x ve y konumunu belirler.
+
+        (mousedown)="startMove($event, item)":
+        Kullanıcı bileşenin üzerine fareyle bastığında
+        taşıma işlemini başlatır.
+      -->
+      <div
+        *ngFor="let item of items"
+        class="receipt-item"
+        [id]="'receipt-item-' + item.id"
+        [class.selected]="selectedItem?.id === item.id"
+        [style.left.px]="item.x"
+        [style.top.px]="item.y"
+        (mousedown)="startMove($event, item)">
+
+        <!--
+          Bu div seçilen bileşenin ortak stil ayarlarını taşır.
+
+          Yazı boyutu, font, renk, kalınlık, hizalama ve
+          kenarlık gibi özellikler burada uygulanır.
+
+          Arka plan rengi burada verilmez.
+          Çünkü tam satır arka plan özelliği yalnızca
+          normal metin bileşenlerinde kullanılacaktır.
+        -->
         <div
           [style.font-size.px]="item.fontSize"
           [style.font-weight]="item.bold ? 'bold' : 'normal'"
@@ -27,48 +51,141 @@
           [style.text-align]="item.align"
           [style.color]="item.color"
           [style.text-decoration]="item.underline ? 'underline' : 'none'"
-          [style.background-color]="item.backgroundColor"
           [style.border-width.px]="item.borderWidth"
           [style.border-style]="item.borderStyle"
           [style.border-color]="item.borderColor">
 
+          <!-- LOGO BİLEŞENİ -->
           <ng-container *ngIf="item.type === 'Logo'; else notLogo">
+
+            <!--
+              imageUrl varsa gerçek logo gösterilir.
+              Logo genişliği ve yüksekliği settings panelden alınır.
+            -->
             <img
               *ngIf="item.imageUrl; else logoPlaceholder"
               [src]="item.imageUrl"
               [style.width.px]="item.logoWidth"
               [style.height.px]="item.logoHeight"
               class="logo-image">
+
           </ng-container>
 
+          <!-- Logo resmi yoksa geçici yazı gösterilir -->
           <ng-template #logoPlaceholder>
             {{ item.text }}
           </ng-template>
 
+
+          <!-- LOGO DEĞİLSE -->
           <ng-template #notLogo>
+
+            <!-- ÇİZGİ BİLEŞENİ -->
+            <ng-container *ngIf="item.type === 'Çizgi'; else notLine">
+
+              <!--
+                separator-wrapper:
+                Çizgiyi kolayca seçebilmek ve taşıyabilmek için
+                görünmez bir yükseklik alanı oluşturur.
+              -->
+              <div
+                class="separator-wrapper"
+                [style.width.px]="item.width">
+
+                <!--
+                  Çizginin kalınlığı, tipi ve rengi
+                  settings paneldeki çizgi ayarlarından gelir.
+                -->
+                <div
+                  class="separator-line"
+                  [style.border-top-width.px]="item.lineWidth"
+                  [style.border-top-style]="item.lineStyle"
+                  [style.border-top-color]="item.color">
+                </div>
+
+              </div>
+
+            </ng-container>
+
+          </ng-template>
+
+
+          <!-- LOGO VE ÇİZGİ DEĞİLSE -->
+          <ng-template #notLine>
+
+            <!-- ÜRÜNLER BİLEŞENİ -->
             <ng-container *ngIf="item.type === 'Ürünler'; else normalText">
+
               <div class="product-list">
+
+                <!-- Ürün tablosunun başlık satırı -->
                 <div class="product-row title-row">
                   <span>Ürün</span>
                   <span>Birim</span>
                   <span>Tutar</span>
                 </div>
 
+                <!--
+                  item.products dizisindeki ürünler tek tek yazdırılır.
+                -->
                 <div
                   class="product-row"
                   *ngFor="let product of item.products">
-                  <span>{{ product.quantity }}x {{ product.name }}</span>
-                  <span>{{ product.price }} TL</span>
-                  <span>{{ product.quantity * product.price }} TL</span>
+
+                  <span>
+                    {{ product.quantity }}x {{ product.name }}
+                  </span>
+
+                  <span>
+                    {{ product.price }} TL
+                  </span>
+
+                  <span>
+                    {{ product.quantity * product.price }} TL
+                  </span>
+
                 </div>
+
               </div>
+
             </ng-container>
+
           </ng-template>
 
+
+          <!--
+            NORMAL METİN BİLEŞENLERİ
+
+            Restoran, Telefon, Adres, Tarih, Masa, Garson,
+            Toplam ve Dipnot gibi bileşenler burada gösterilir.
+
+            fullBackground false ise:
+            Arka plan yalnızca yazının arkasında görünür.
+
+            fullBackground true ise:
+            Arka plan item.width kadar genişler ve tam satır görünür.
+          -->
           <ng-template #normalText>
-            {{ item.type === 'Toplam'
-              ? ('Toplam: ' + getTotal() + ' TL')
-              : item.text }}
+
+            <div
+              class="text-content"
+              [style.background-color]="item.backgroundColor"
+              [style.width.px]="item.fullBackground ? item.width : null"
+              [style.box-sizing]="'border-box'"
+              [style.padding.px]="item.fullBackground ? 4 : null">
+
+              <!--
+                Bileşen Toplam ise getTotal() ile hesaplanan tutar gösterilir.
+                Diğer bileşenlerde item.text gösterilir.
+              -->
+              {{
+                item.type === 'Toplam'
+                  ? ('Toplam: ' + getTotal() + ' TL')
+                  : item.text
+              }}
+
+            </div>
+
           </ng-template>
 
         </div>
@@ -76,17 +193,30 @@
     </div>
   </div>
 
+
+  <!-- ÖNİZLEME ALANI -->
   <div class="final-section">
     <h2>Önizleme</h2>
 
     <div class="receipt final-receipt">
 
+      <!--
+        Tasarım alanındaki bileşenler aynı x ve y koordinatlarıyla
+        önizleme alanında da gösterilir.
+
+        Burada mousedown bulunmaz.
+        Çünkü önizleme alanındaki bileşenler taşınamaz.
+      -->
       <div
         *ngFor="let item of items"
         class="receipt-item preview-item"
         [style.left.px]="item.x"
         [style.top.px]="item.y">
 
+        <!--
+          Tasarım alanındaki stil ayarları
+          önizleme alanına da aynı şekilde uygulanır.
+        -->
         <div
           [style.font-size.px]="item.fontSize"
           [style.font-weight]="item.bold ? 'bold' : 'normal'"
@@ -95,27 +225,63 @@
           [style.text-align]="item.align"
           [style.color]="item.color"
           [style.text-decoration]="item.underline ? 'underline' : 'none'"
-          [style.background-color]="item.backgroundColor"
           [style.border-width.px]="item.borderWidth"
           [style.border-style]="item.borderStyle"
           [style.border-color]="item.borderColor">
 
-          <ng-container *ngIf="item.type === 'Logo'; else notPreviewLogo">
+          <!-- ÖNİZLEMEDE LOGO -->
+          <ng-container
+            *ngIf="item.type === 'Logo'; else notPreviewLogo">
+
             <img
               *ngIf="item.imageUrl; else logoPreviewPlaceholder"
               [src]="item.imageUrl"
               [style.width.px]="item.logoWidth"
               [style.height.px]="item.logoHeight"
               class="logo-image">
+
           </ng-container>
 
+          <!-- Önizlemede logo resmi yoksa geçici yazı gösterilir -->
           <ng-template #logoPreviewPlaceholder>
             {{ item.text }}
           </ng-template>
 
+
+          <!-- ÖNİZLEMEDE LOGO DEĞİLSE -->
           <ng-template #notPreviewLogo>
-            <ng-container *ngIf="item.type === 'Ürünler'; else normalPreviewText">
+
+            <!-- ÖNİZLEMEDE ÇİZGİ -->
+            <ng-container
+              *ngIf="item.type === 'Çizgi'; else notPreviewLine">
+
+              <div
+                class="separator-wrapper"
+                [style.width.px]="item.width">
+
+                <div
+                  class="separator-line"
+                  [style.border-top-width.px]="item.lineWidth"
+                  [style.border-top-style]="item.lineStyle"
+                  [style.border-top-color]="item.color">
+                </div>
+
+              </div>
+
+            </ng-container>
+
+          </ng-template>
+
+
+          <!-- ÖNİZLEMEDE LOGO VE ÇİZGİ DEĞİLSE -->
+          <ng-template #notPreviewLine>
+
+            <!-- ÖNİZLEMEDE ÜRÜNLER -->
+            <ng-container
+              *ngIf="item.type === 'Ürünler'; else normalPreviewText">
+
               <div class="product-list">
+
                 <div class="product-row title-row">
                   <span>Ürün</span>
                   <span>Birim</span>
@@ -125,18 +291,51 @@
                 <div
                   class="product-row"
                   *ngFor="let product of item.products">
-                  <span>{{ product.quantity }}x {{ product.name }}</span>
-                  <span>{{ product.price }} TL</span>
-                  <span>{{ product.quantity * product.price }} TL</span>
+
+                  <span>
+                    {{ product.quantity }}x {{ product.name }}
+                  </span>
+
+                  <span>
+                    {{ product.price }} TL
+                  </span>
+
+                  <span>
+                    {{ product.quantity * product.price }} TL
+                  </span>
+
                 </div>
+
               </div>
+
             </ng-container>
+
           </ng-template>
 
+
+          <!--
+            ÖNİZLEMEDE NORMAL METİNLER
+
+            Tasarım alanında yapılan tam satır arka plan seçimi
+            önizleme alanında da aynı şekilde gösterilir.
+          -->
           <ng-template #normalPreviewText>
-            {{ item.type === 'Toplam'
-              ? ('Toplam: ' + getTotal() + ' TL')
-              : item.text }}
+
+            <div
+              class="text-content"
+              [style.background-color]="item.backgroundColor"
+              [style.width.px]="item.fullBackground ? item.width : null"
+              [style.box-sizing]="'border-box'"
+              [style.padding.px]="item.fullBackground ? 4 : null">
+
+              {{
+                item.type === 'Toplam'
+                  ? ('Toplam: ' + getTotal() + ' TL')
+                  : item.text
+              }}
+
+            </div>
+
           </ng-template>
 
         </div>
@@ -146,13 +345,37 @@
 
 </div>
 
-<!--#editorReceipt Bu elemente Angular içinde bir isim verir.
-TS tarafında şu satır bunu yakalar:
-@ViewChild('editorReceipt') editorReceipt!: ElementRef;
-Böylece TypeScript, tasarım alanının gerçek HTML elementine erişebilir
 
-receipt-item bütün fiş elemanlarının ortak görünümüdür.
-editor-item sadece tasarım alanındaki elemanlara özel davranıştır.
+<!--
+  #editorReceipt:
 
-(mousedown)="startMove($event, item)"
-Kullanıcı item’ın üzerine fareyle bastığında çalışır.-->
+  Bu HTML elementine Angular içinde bir referans adı verir.
+
+  TypeScript tarafında şu satırla yakalanır:
+
+  @ViewChild('editorReceipt') editorReceipt!: ElementRef;
+
+  Böylece TypeScript, tasarım alanının gerçek HTML elementine
+  erişebilir ve bırakma/taşıma koordinatlarını hesaplayabilir.
+
+
+  receipt-item:
+
+  Fişte bulunan bütün bileşenlerin ortak dış kutusudur.
+  Bileşenin konumu left ve top değerleriyle belirlenir.
+
+
+  preview-item:
+
+  Yalnızca önizleme alanındaki bileşenlere özel sınıftır.
+  Önizleme alanındaki bileşenler taşınamaz.
+
+
+  (mousedown)="startMove($event, item)":
+
+  Kullanıcı tasarım alanındaki bir bileşenin üzerine
+  fareyle bastığında startMove fonksiyonu çalışır.
+
+  $event fare olayını,
+  item ise seçilen bileşeni TypeScript tarafına gönderir.
+-->

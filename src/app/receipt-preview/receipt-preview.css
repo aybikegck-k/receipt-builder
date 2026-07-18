@@ -32,6 +32,7 @@ h2 {
   min-height: 550px;
   border-radius: 4px;
   position: relative;
+  overflow: hidden;
 }
 
 /* Tasarım alanı */
@@ -45,54 +46,53 @@ h2 {
 
   background-size: 15px 15px;
 }
-.editor-receipt {
-  position: relative;
-  overflow: hidden;
-}
 
-/* Önizleme */
+/* Önizleme alanı */
 .final-receipt {
   background: white;
   border: 2px solid #ddd;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, .12);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
 }
 
-.editor-item,
-.preview-item {
-  position: absolute;
-}
-
-.editor-item {
-  cursor: move;
-  user-select: none;
-}
-
+/*
+  Fişteki bütün bileşenlerin ortak dış kutusu.
+  left ve top değerleri HTML tarafında dinamik olarak verilir.
+*/
 .receipt-item {
+  position: absolute;
   padding: 4px;
   border-radius: 4px;
   background: transparent;
+  box-sizing: border-box;
+  user-select: none;
 }
 
-.receipt-item p {
-  margin: 0;
-  white-space: pre-line;
+/* Tasarım alanındaki bileşenler taşınabilir */
+.editor-receipt .receipt-item {
+  cursor: move;
 }
-.receipt-item {
-  position: absolute;
-  box-sizing: border-box;
-}
+
+/* Seçilen bileşenin etrafında kesikli çerçeve gösterilir */
 .receipt-item.selected {
   border: 2px dashed #4da3ff;
   border-radius: 4px;
 }
 
+/* Önizlemedeki bileşenler fare olaylarını almaz */
+.preview-item {
+  pointer-events: none;
+}
+
+/* Logo */
 .logo-image {
   object-fit: contain;
   display: block;
 }
 
+/* Ürünler tablosu */
 .product-list {
   min-width: 180px;
+  display: block;
 }
 
 .product-row {
@@ -110,4 +110,37 @@ h2 {
   font-weight: bold;
   border-bottom: 1px solid #000;
   margin-bottom: 4px;
+}
+
+/*
+  Normal metin bileşenleri:
+  Restoran, telefon, adres, tarih, masa, garson,
+  toplam ve dipnot bu sınıfı kullanır.
+*/
+.text-content {
+  display: inline-block;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+
+/*
+  Çizginin çevresinde görünmez bir tutma alanı oluşturur.
+  Böylece ince çizgi kolayca seçilip taşınabilir.
+*/
+.separator-wrapper {
+  height: 18px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  cursor: move;
+}
+
+/* Gerçek yatay çizgi */
+.separator-line {
+  width: 100%;
+  height: 0;
+  box-sizing: border-box;
+  pointer-events: none;
 }

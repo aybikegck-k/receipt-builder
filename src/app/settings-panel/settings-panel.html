@@ -1,93 +1,44 @@
 <h2>Özellikler</h2>
 
 <div *ngIf="selectedItem; else noSelection">
+
   <h3>Seçili Bileşen</h3>
 
-  <p><strong></strong> {{ selectedItem.type }}</p>
+  <p>{{ selectedItem.type }}</p>
 
- <div *ngIf="selectedItem.type === 'Logo'">
 
-  <label>Logo Genişliği:</label>
-  <input type="number" [(ngModel)]="selectedItem.logoWidth">
+  <!-- LOGO AYARLARI -->
+  <div *ngIf="selectedItem.type === 'Logo'">
 
-  <label>Logo Yüksekliği:</label>
-  <input type="number" [(ngModel)]="selectedItem.logoHeight">
-
-  <button class="delete-btn" (click)="deleteSelectedItem()">Sil</button>
-
-</div>
-
-<!-- ÜRÜNLER AYARLARI -->
-<div *ngIf="selectedItem.type === 'Ürünler'">
-  
-
-  
-
-  <label>Yazı Boyutu:</label>
-  <input
-    type="number"
-    min="8"
-    [(ngModel)]="selectedItem.fontSize"
-  >
-
-  <label>Yazı Tipi:</label>
-  <select [(ngModel)]="selectedItem.fontFamily">
-    <option value="serif">Serif</option>
-    <option value="sans-serif">Sans Serif</option>
-    <option value="monospace">Monospace</option>
-    <option value="cursive">Cursive</option>
-  </select>
-
-  <label>
+    <label>Logo Genişliği:</label>
     <input
-      type="checkbox"
-      [(ngModel)]="selectedItem.bold"
-    >
-    Kalın
-  </label>
+      type="number"
+      min="20"
+      [(ngModel)]="selectedItem.logoWidth">
 
-  <label>
+    <label>Logo Yüksekliği:</label>
     <input
-      type="checkbox"
-      [(ngModel)]="selectedItem.italic"
-    >
-    İtalik
-  </label>
+      type="number"
+      min="20"
+      [(ngModel)]="selectedItem.logoHeight">
+
+    <button
+      class="delete-btn"
+      (click)="deleteSelectedItem()">
+      Sil
+    </button>
+
+  </div>
 
 
-  <label>Yazı Rengi:</label>
-    <input type="color" [(ngModel)]="selectedItem.color">
+  <!-- ÜRÜNLER AYARLARI -->
+  <div *ngIf="selectedItem.type === 'Ürünler'">
 
-    <label>Arka Plan Rengi:</label>
-    <input type="color" [(ngModel)]="selectedItem.backgroundColor">
-
-    <label>Kenarlık Kalınlığı:</label>
-    <input type="number" min="0" [(ngModel)]="selectedItem.borderWidth">
-
-    <label>Kenarlık Rengi:</label>
-    <input type="color" [(ngModel)]="selectedItem.borderColor">
-
-    <label>Kenarlık Tipi:</label>
-    <select [(ngModel)]="selectedItem.borderStyle">
-      <option value="solid">Solid</option>
-      <option value="dashed">Dashed</option>
-      <option value="dotted">Dotted</option>
-    </select>
-
-
-  <button
-    class="delete-btn"
-    (click)="deleteSelectedItem()"
-  >
-    Sil
-  </button>
-</div>
-
-  <!-- NORMAL YAZI AYARLARI -->
-  <div *ngIf="selectedItem.type !== 'Logo' && selectedItem.type !== 'Ürünler'">
-  
     <label>Yazı Boyutu:</label>
-    <input type="number" [(ngModel)]="selectedItem.fontSize">
+    <input
+      type="number"
+      min="8"
+      [(ngModel)]="selectedItem.fontSize">
 
     <label>Yazı Tipi:</label>
     <select [(ngModel)]="selectedItem.fontFamily">
@@ -98,17 +49,136 @@
     </select>
 
     <label>
-      <input type="checkbox" [(ngModel)]="selectedItem.underline">
-      Altı çizili
-    </label>
-
-    <label>
-      <input type="checkbox" [(ngModel)]="selectedItem.bold">
+      <input
+        type="checkbox"
+        [(ngModel)]="selectedItem.bold">
       Kalın
     </label>
 
     <label>
-      <input type="checkbox" [(ngModel)]="selectedItem.italic">
+      <input
+        type="checkbox"
+        [(ngModel)]="selectedItem.italic">
+      İtalik
+    </label>
+
+    <label>Yazı Rengi:</label>
+    <input
+      type="color"
+      [(ngModel)]="selectedItem.color">
+
+    <label>Arka Plan Rengi:</label>
+    <input
+      type="color"
+      [(ngModel)]="selectedItem.backgroundColor">
+
+    <label>Kenarlık Kalınlığı:</label>
+    <input
+      type="number"
+      min="0"
+      [(ngModel)]="selectedItem.borderWidth">
+
+    <label>Kenarlık Rengi:</label>
+    <input
+      type="color"
+      [(ngModel)]="selectedItem.borderColor">
+
+    <label>Kenarlık Tipi:</label>
+    <select [(ngModel)]="selectedItem.borderStyle">
+      <option value="solid">Düz</option>
+      <option value="dashed">Kesikli</option>
+      <option value="dotted">Noktalı</option>
+    </select>
+
+    <button
+      class="delete-btn"
+      (click)="deleteSelectedItem()">
+      Sil
+    </button>
+
+  </div>
+
+
+  <!-- ÇİZGİ AYARLARI -->
+  <div *ngIf="selectedItem.type === 'Çizgi'">
+
+    <h4>Çizgi Ayarları</h4>
+
+    <label>Kalınlık:</label>
+    <input
+      type="number"
+      min="1"
+      max="10"
+      [(ngModel)]="selectedItem.lineWidth">
+
+    <label>Renk:</label>
+    <input
+      type="color"
+      [(ngModel)]="selectedItem.color">
+
+    <label>Çizgi Tipi:</label>
+    <select [(ngModel)]="selectedItem.lineStyle">
+      <option value="solid">Düz</option>
+      <option value="dashed">Kesikli</option>
+      <option value="dotted">Noktalı</option>
+    </select>
+
+    <label>Genişlik:</label>
+    <input
+      type="number"
+      min="20"
+      max="232"
+      [(ngModel)]="selectedItem.width">
+
+    <button
+      class="delete-btn"
+      (click)="deleteSelectedItem()">
+      Sil
+    </button>
+
+  </div>
+
+
+  <!-- NORMAL YAZI AYARLARI -->
+  <div
+    *ngIf="
+      selectedItem.type !== 'Logo' &&
+      selectedItem.type !== 'Ürünler' &&
+      selectedItem.type !== 'Çizgi'
+    ">
+
+    <label>Yazı Boyutu:</label>
+    <input
+      type="number"
+      min="8"
+      [(ngModel)]="selectedItem.fontSize">
+
+    <label>Yazı Tipi:</label>
+    <select [(ngModel)]="selectedItem.fontFamily">
+      <option value="serif">Serif</option>
+      <option value="sans-serif">Sans Serif</option>
+      <option value="monospace">Monospace</option>
+      <option value="cursive">Cursive</option>
+    </select>
+
+    <label>
+      <input
+        type="checkbox"
+        [(ngModel)]="selectedItem.underline">
+      Altı çizili
+    </label>
+
+    <label>
+      <input
+        type="checkbox"
+        [(ngModel)]="selectedItem.bold">
+      Kalın
+    </label>
+
+    <label>
+      <input
+        type="checkbox"
+        [(ngModel)]="selectedItem.italic">
       İtalik
     </label>
 
@@ -120,34 +190,92 @@
     </select>
 
     <label>Yazı Rengi:</label>
-    <input type="color" [(ngModel)]="selectedItem.color">
+    <input
+      type="color"
+      [(ngModel)]="selectedItem.color">
 
     <label>Arka Plan Rengi:</label>
-    <input type="color" [(ngModel)]="selectedItem.backgroundColor">
+    <input
+      type="color"
+      [(ngModel)]="selectedItem.backgroundColor">
+
+    <!--
+      Tam satır arka plan kapalıysa renk yalnızca yazının arkasında görünür.
+      Açık olduğunda arka plan selectedItem.width kadar genişler.
+    -->
+    <label class="checkbox-label">
+      <input
+        type="checkbox"
+        [(ngModel)]="selectedItem.fullBackground">
+      Tam satır arka plan
+    </label>
+
+    <!--
+      Satır genişliği yalnızca tam satır arka plan açıkken gösterilir.
+    -->
+    <div *ngIf="selectedItem.fullBackground">
+
+      <label>Satır Genişliği:</label>
+      <input
+        type="number"
+        min="20"
+        max="232"
+        [(ngModel)]="selectedItem.width">
+
+    </div>
 
     <label>Kenarlık Kalınlığı:</label>
-    <input type="number" min="0" [(ngModel)]="selectedItem.borderWidth">
+    <input
+      type="number"
+      min="0"
+      [(ngModel)]="selectedItem.borderWidth">
 
     <label>Kenarlık Rengi:</label>
-    <input type="color" [(ngModel)]="selectedItem.borderColor">
+    <input
+      type="color"
+      [(ngModel)]="selectedItem.borderColor">
 
     <label>Kenarlık Tipi:</label>
     <select [(ngModel)]="selectedItem.borderStyle">
-      <option value="solid">Solid</option>
-      <option value="dashed">Dashed</option>
-      <option value="dotted">Dotted</option>
+      <option value="solid">Düz</option>
+      <option value="dashed">Kesikli</option>
+      <option value="dotted">Noktalı</option>
     </select>
 
-    <button class="delete-btn" (click)="deleteSelectedItem()">Sil</button>
+    <button
+      class="delete-btn"
+      (click)="deleteSelectedItem()">
+      Sil
+    </button>
+
   </div>
+
 </div>
 
+
+<!-- HİÇBİR BİLEŞEN SEÇİLMEDİĞİNDE -->
 <ng-template #noSelection>
   <p>Bileşen seçildiğinde ayarlar burada görünecek.</p>
 </ng-template>
-<!--*ngIf-> koşula göre göster/gizle
-*ngFor-> diziyi dolaş
-[(ngModel)]-> input ile değişkeni birbirine bağla
-()->butona basınca TS fonksiyonunu çalıştır
-(change)->dosya seçilince çalış
-{{}}->TS dedki değeri HTML e yazdır-->
+
+
+<!--
+  *ngIf:
+  Koşula göre HTML elemanını gösterir veya gizler.
+
+  *ngFor:
+  Bir dizideki elemanları tek tek dolaşır.
+
+  [(ngModel)]:
+  Input ile TypeScript değişkenini çift yönlü bağlar.
+  Input değiştiğinde değişken de güncellenir.
+
+  (click):
+  Butona basıldığında TypeScript fonksiyonunu çalıştırır.
+
+  (change):
+  Input değeri veya dosya seçimi değiştiğinde çalışır.
+
+  {{ }}:
+  TypeScript tarafındaki değeri HTML içerisinde gösterir.
+-->

@@ -17,6 +17,8 @@ interface ReceiptData {
   logo: string;
   tableNo: string;
   waiter: string;
+  phone: string;
+  address: string;
   note: string;
   products: Product[];
 }
@@ -110,14 +112,16 @@ onFileSelected(event: Event): void {
   reader.readAsText(file);
 }
   // JSON dosyasından gelen bütün adisyon verileri.
-  receiptData: ReceiptData = {
-    restaurantName: '',
-    logo: '',
-    tableNo: '',
-    waiter: '',
-    note: '',
-    products: []
-  };
+receiptData: ReceiptData = {
+  restaurantName: '',
+  logo: '',
+  tableNo: '',
+  waiter: '',
+  phone: '',
+  address: '',
+  note: '',
+  products: []
+};
 
   constructor(private http: HttpClient) {
     this.loadReceiptData();
@@ -255,9 +259,13 @@ addComponent(event: any): void {
       fontFamily: 'serif',
       color: '#000000',
       backgroundColor: 'transparent',
+      fullBackground: false,
       borderWidth: 0,
       borderColor: '#000000',
       borderStyle: 'solid',
+      lineStyle: 'solid',
+lineWidth: 1,
+width: 220,
 
       x: x,
       y: y
@@ -317,6 +325,14 @@ addComponent(event: any): void {
 
       case 'Dipnot':
         return this.receiptData.note;
+        case 'Telefon':
+  return this.receiptData.phone;
+
+case 'Adres':
+  return this.receiptData.address;
+
+case 'Çizgi':
+  return '';
 
       default:
         return 'Yeni Öğe';

@@ -10,16 +10,19 @@ import { NgFor } from '@angular/common';
 })
 export class ComponentPool {
 
-  components = [
-    { type: 'Logo', label: '🍽️ Logo' },
-    { type: 'Restoran', label: '🏪 Restoran Adı' },
-    { type: 'Tarih', label: '📅 Tarih' },
-    { type: 'Masa', label: '🪑 Masa' },
-    { type: 'Garson', label: '👨‍🍳 Garson' },
-    { type: 'Ürünler', label: '🍕 Ürünler' },
-    { type: 'Toplam', label: '💰 Toplam' },
-    { type: 'Dipnot', label: '📝 Dipnot' },
-  ];
+components = [
+  { type: 'Logo', label: '🍽️ Logo' },
+  { type: 'Restoran', label: '🏪 Restoran Adı' },
+  { type: 'Telefon', label: '📞 Telefon' },
+  { type: 'Adres', label: '📍 Adres' },
+  { type: 'Tarih', label: '📅 Tarih' },
+  { type: 'Masa', label: '🪑 Masa' },
+  { type: 'Garson', label: '👨‍🍳 Garson' },
+  { type: 'Ürünler', label: '🍕 Ürünler' },
+  { type: 'Çizgi', label: '➖ Çizgi' },
+  { type: 'Toplam', label: '💰 Toplam' },
+  { type: 'Dipnot', label: '📝 Dipnot' },
+];
 
   dragStart(event: DragEvent, type: string) {
     event.dataTransfer?.setData('componentType', type);
