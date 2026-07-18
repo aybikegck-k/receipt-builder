@@ -1,16 +1,28 @@
-<h2>Bileşenler</h2>
+
+<div class="info-box">
+    
+    <div>
+  
+        <p>Fiş tasarımına eklemek için sürükleyin.</p>
+    </div>
+</div>
+<div class="panel-header">
+  <h2>Bileşenler</h2>
+  
+</div>
 
 <div class="pool-list">
-
   <div
     class="item"
-    *ngFor="let component of components" 
+    *ngFor="let component of components"
     draggable="true"
-    (dragstart)="dragStart($event, component.type)">
-    
+    (dragstart)="dragStart($event, component.type)"
+  >
+    <span class="item-name">
+      {{ component.label }}
+    </span>
 
-    {{ component.label }}
-
+    <span class="drag-icon">⠿</span>
   </div>
 </div>
 
