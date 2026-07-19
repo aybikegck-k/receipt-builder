@@ -144,3 +144,39 @@ h2 {
   box-sizing: border-box;
   pointer-events: none;
 }
+/* =========================================================
+   YENİ EKLENDİ: TOPLAM BİLGİLERİ BLOĞU
+   ========================================================= */
+
+.total-block {
+  width: 100%;
+  min-width: 180px;
+  box-sizing: border-box;
+  padding: 4px;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 2px 0;
+}
+
+.total-row span:first-child {
+  text-align: left;
+}
+
+.total-row span:last-child {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.grand-total {
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px solid currentColor;
+  font-weight: bold;
+}

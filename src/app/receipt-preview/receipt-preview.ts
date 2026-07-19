@@ -1,16 +1,39 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, HostListener } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ElementRef,
+  HostListener
+} from '@angular/core';
 
 import { NgFor, NgIf } from '@angular/common';
+
 @Component({
   selector: 'app-receipt-preview',
   standalone: true,
-  imports: [NgFor,NgIf],
+  imports: [NgFor, NgIf],
   templateUrl: './receipt-preview.html',
   styleUrl: './receipt-preview.css',
 })
 export class ReceiptPreview {
+
   @Input() items: any[] = []; //App, receiptItems dizisini ReceiptPreviewe gönderiyor
   @Input() selectedItem: any = null; //appde hangi bileşenin seçili oldugunu receiptpreviewe gönderir
+
+  /*
+    YENİ EKLENDİ:
+    App içindeki receiptData verisini ReceiptPreview bileşenine alır.
+
+    Bu veri sayesinde indirim tutarına ve KDV oranına
+    ReceiptPreview içerisinden ulaşabiliriz.
+  */
+  @Input() receiptData: any = {
+    discount: 0,
+    vatRate: 0,
+    products: []
+  };
 
   @Output() itemSelected = new EventEmitter<any>();//Kullanıcı tasarım alanındaki bir bileşene tıklayınca, tıklanan bileşeni App’e gönderir.
   @Output() componentDropped = new EventEmitter<any>();//Sol panelden bir bileşen tasarım alanına bırakıldığında App’e haber verir.
@@ -21,80 +44,187 @@ export class ReceiptPreview {
   offsetX = 0; //bunlar sayesinde bileşen tutuldugu noktadan hareket eder
   offsetY = 0;//kullanılmazsa kaymaalr olur
 
+
   allowDrop(event: DragEvent) {
     event.preventDefault();//bazen tarayıcı bir elementi baska alanın üzerine bırakmaya izin vermiyor
   }//bu varsayılan bu davranısı engeller ve bırakılabilir hale getirir
-getTotal(): number {
-  const productItem = this.items.find(
-    item => item.type === 'Ürünler'
-  );
 
-  if (!productItem || !Array.isArray(productItem.products)) {
-    return 0;
+
+  /*
+    YENİ EKLENDİ:
+    Ara toplamı hesaplar.
+
+    Öncelikle tasarım alanındaki Ürünler bileşenini bulur.
+    Ürünler bileşeni varsa onun products dizisini kullanır.
+
+    Ürünler bileşeni henüz eklenmemişse receipt-data.json
+    içerisinden gelen ürünleri kullanır.
+  */
+  getSubTotal(): number {
+    const productItem = this.items.find(
+      item => item.type === 'Ürünler'
+    );
+
+    const products =
+      productItem &&
+      Array.isArray(productItem.products)
+        ? productItem.products
+        : this.receiptData?.products;
+
+    if (!Array.isArray(products)) {
+      return 0;
+    }
+
+    return products.reduce(
+      (total: number, product: any) => {
+        const quantity =
+          Number(product.quantity) || 0;
+
+        const price =
+          Number(product.price) || 0;
+
+        return total + quantity * price;
+      },
+      0
+    );
   }
 
-  return productItem.products.reduce(
-    (total: number, product: any) => {
-      const quantity = Number(product.quantity) || 0;
-      const price = Number(product.price) || 0;
 
-      return total + quantity * price;
-    },
-    0
-  );
-}
+  /*
+    YENİ EKLENDİ:
+    JSON dosyasından gelen indirim tutarını döndürür.
 
-dropComponent(event: DragEvent) {
-  event.preventDefault();
+    İndirim negatif olamaz.
+    İndirim ara toplamdan büyükse ara toplam kadar kabul edilir.
+    Böylece toplamın negatif olması engellenir.
+  */
+  getDiscount(): number {
+    const discount =
+      Number(this.receiptData?.discount) || 0;
 
-  const type = event.dataTransfer?.getData('componentType');
-
-  if (!type) return;
-
-  const area =
-    this.editorReceipt.nativeElement.getBoundingClientRect();
-
-  const dropX = event.clientX - area.left;
-  const dropY = event.clientY - area.top;
-
-  let itemWidth = 100;
-  let itemHeight = 30;
-
-  if (type === 'Logo') {
-    itemWidth = 120;
-    itemHeight = 80;
+    return Math.min(
+      Math.max(discount, 0),
+      this.getSubTotal()
+    );
   }
 
-  if (type === 'Ürünler') {
-    itemWidth = 210;
-    itemHeight = 180;
+
+  /*
+    YENİ EKLENDİ:
+    JSON dosyasından gelen KDV oranını döndürür.
+  */
+  getVatRate(): number {
+    return Number(
+      this.receiptData?.vatRate
+    ) || 0;
   }
 
-  let x = dropX - itemWidth / 2;
-let y = dropY - itemHeight / 2;
 
-const maxX = area.width - itemWidth;
-const maxY = area.height - itemHeight;
+  /*
+    YENİ EKLENDİ:
+    KDV, indirim uygulandıktan sonra kalan tutar
+    üzerinden hesaplanır.
 
-x = Math.max(0, Math.min(x, maxX));
-y = Math.max(0, Math.min(y, maxY));
+    Örnek:
+    Ara toplam = 2200
+    İndirim = 100
+    KDV oranı = %10
 
-  this.componentDropped.emit({
-    type: type,
-    x: x,
-    y: y
-  });
-}
+    KDV = (2200 - 100) × 10 / 100
+    KDV = 210
+  */
+  getVat(): number {
+    const amountAfterDiscount =
+      this.getSubTotal() -
+      this.getDiscount();
+
+    return (
+      amountAfterDiscount *
+      this.getVatRate() /
+      100
+    );
+  }
+
+
+  /*
+    YENİ EKLENDİ:
+    Genel toplamı hesaplar.
+
+    Genel Toplam =
+    Ara Toplam - İndirim + KDV
+  */
+  getTotal(): number {
+    return (
+      this.getSubTotal() -
+      this.getDiscount() +
+      this.getVat()
+    );
+  }
+
+
+  dropComponent(event: DragEvent) {
+    event.preventDefault();
+
+    const type = event.dataTransfer?.getData('componentType');
+
+    if (!type) return;
+
+    const area =
+      this.editorReceipt.nativeElement.getBoundingClientRect();
+
+    const dropX = event.clientX - area.left;
+    const dropY = event.clientY - area.top;
+
+    let itemWidth = 100;
+    let itemHeight = 30;
+
+    if (type === 'Logo') {
+      itemWidth = 120;
+      itemHeight = 80;
+    }
+
+    if (type === 'Ürünler') {
+      itemWidth = 210;
+      itemHeight = 180;
+    }
+
+    /*
+      YENİ EKLENDİ:
+      Toplam artık dört satırlık bir blok olduğu için
+      bırakma konumu hesaplanırken daha büyük yükseklik kullanılır.
+    */
+    if (type === 'Toplam') {
+      itemWidth = 220;
+      itemHeight = 110;
+    }
+
+    let x = dropX - itemWidth / 2;
+    let y = dropY - itemHeight / 2;
+
+    const maxX = area.width - itemWidth;
+    const maxY = area.height - itemHeight;
+
+    x = Math.max(0, Math.min(x, maxX));
+    y = Math.max(0, Math.min(y, maxY));
+
+    this.componentDropped.emit({
+      type: type,
+      x: x,
+      y: y
+    });
+  }
+
 
   selectItem(item: any) {//Kullanıcı tasarım alanındaki bir bileşene tıklayınca çalışır.
     this.itemSelected.emit(item); //tıklanan nesneyi emit(item) ile appe gönderir
   }
 
+
   startMove(event: MouseEvent, item: any) {//Kullanıcı tasarım alanındaki bir bileşene fareyle bastığında çalışır.
     event.preventDefault();//Kullanıcı tasarım alanındaki bir bileşene fareyle bastığında çalışır.
 
     this.selectItem(item);//Taşımaya başladığımız bileşeni aynı zamanda seçili hale getirir.
-//Yani kullanıcı bir bileşeni tutunca sağ panel de o bileşenin ayarlarını gösterir.
+    //Yani kullanıcı bir bileşeni tutunca sağ panel de o bileşenin ayarlarını gösterir.
     this.draggingItem = item;//Şu anda hareket ettirilen bileşeni kaydeder.
 
     const itemElement = event.currentTarget as HTMLElement;
@@ -103,41 +233,65 @@ y = Math.max(0, Math.min(y, maxY));
     this.offsetX = event.clientX - rect.left;
     this.offsetY = event.clientY - rect.top;
   }
- 
+
 
   @HostListener('document:mousemove', ['$event'])
-moveItem(event: MouseEvent) {
-  if (!this.draggingItem || !this.editorReceipt) return;
+  moveItem(event: MouseEvent) {
+    if (!this.draggingItem || !this.editorReceipt) return;
 
-  const receiptElement = this.editorReceipt.nativeElement as HTMLElement;
-  const area = receiptElement.getBoundingClientRect();
+    const receiptElement =
+      this.editorReceipt.nativeElement as HTMLElement;
 
-  const itemElement = document.getElementById(
-    'receipt-item-' + this.draggingItem.id
-  );
+    const area =
+      receiptElement.getBoundingClientRect();
 
-  if (!itemElement) return;
+    const itemElement = document.getElementById(
+      'receipt-item-' + this.draggingItem.id
+    );
 
-  const itemWidth = itemElement.offsetWidth;
-  const itemHeight = itemElement.offsetHeight;
+    if (!itemElement) return;
 
-  let newX = event.clientX - area.left - this.offsetX;
-  let newY = event.clientY - area.top - this.offsetY;
+    const itemWidth = itemElement.offsetWidth;
+    const itemHeight = itemElement.offsetHeight;
 
-  const maxX = receiptElement.clientWidth - itemWidth;
-  const maxY = receiptElement.clientHeight - itemHeight;
+    let newX =
+      event.clientX -
+      area.left -
+      this.offsetX;
 
-  newX = Math.max(0, Math.min(newX, maxX));
-  newY = Math.max(0, Math.min(newY, maxY));
+    let newY =
+      event.clientY -
+      area.top -
+      this.offsetY;
 
-  this.draggingItem.x = newX;
-  this.draggingItem.y = newY;
-}
+    const maxX =
+      receiptElement.clientWidth -
+      itemWidth;
+
+    const maxY =
+      receiptElement.clientHeight -
+      itemHeight;
+
+    newX = Math.max(
+      0,
+      Math.min(newX, maxX)
+    );
+
+    newY = Math.max(
+      0,
+      Math.min(newY, maxY)
+    );
+
+    this.draggingItem.x = newX;
+    this.draggingItem.y = newY;
+  }
+
 
   @HostListener('document:mouseup')
   stopMove() {
     this.draggingItem = null;
   } //taşıma işlemini bitirir sol tuşu buraktıgın an çalışır
+
 }
 
 //input parent compenentten child compenente veri almak için kullanılır

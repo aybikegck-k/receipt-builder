@@ -114,7 +114,8 @@
           <ng-template #notLine>
 
             <!-- ÜRÜNLER BİLEŞENİ -->
-            <ng-container *ngIf="item.type === 'Ürünler'; else normalText">
+            <ng-container
+              *ngIf="item.type === 'Ürünler'; else notProducts">
 
               <div class="product-list">
 
@@ -154,10 +155,90 @@
 
 
           <!--
+            YENİ EKLENDİ:
+            Ürünler bileşeni değilse Toplam bileşeni kontrol edilir.
+          -->
+          <ng-template #notProducts>
+
+            <!-- YENİ EKLENDİ: TOPLAM BİLGİLERİ BLOĞU -->
+            <ng-container
+              *ngIf="item.type === 'Toplam'; else normalText">
+
+              <div
+                class="total-block"
+                [style.width.px]="item.width"
+                [style.background-color]="item.backgroundColor">
+
+                <!-- Ara Toplam -->
+                <div
+                  class="total-row"
+                  *ngIf="item.showSubtotal">
+
+                  <span>Ara Toplam:</span>
+
+                  <span>
+                    {{ getSubTotal().toFixed(2) }} TL
+                  </span>
+
+                </div>
+
+
+                <!-- İndirim -->
+                <div
+                  class="total-row"
+                  *ngIf="item.showDiscount">
+
+                  <span>İndirim:</span>
+
+                  <span>
+                    -{{ getDiscount().toFixed(2) }} TL
+                  </span>
+
+                </div>
+
+
+                <!-- KDV -->
+                <div
+                  class="total-row"
+                  *ngIf="item.showVat">
+
+                  <span>
+                    KDV (%{{ getVatRate() }}):
+                  </span>
+
+                  <span>
+                    {{ getVat().toFixed(2) }} TL
+                  </span>
+
+                </div>
+
+
+                <!-- Genel Toplam -->
+                <div class="total-row grand-total">
+
+                  <span>Toplam:</span>
+
+                  <span>
+                    {{ getTotal().toFixed(2) }} TL
+                  </span>
+
+                </div>
+
+              </div>
+
+            </ng-container>
+
+          </ng-template>
+
+
+          <!--
             NORMAL METİN BİLEŞENLERİ
 
-            Restoran, Telefon, Adres, Tarih, Masa, Garson,
-            Toplam ve Dipnot gibi bileşenler burada gösterilir.
+            Restoran, Telefon, Adres, Tarih, Masa, Garson
+            ve Dipnot gibi bileşenler burada gösterilir.
+
+            Toplam artık burada gösterilmez.
+            Toplam için yukarıda özel bir blok oluşturuldu.
 
             fullBackground false ise:
             Arka plan yalnızca yazının arkasında görünür.
@@ -174,15 +255,7 @@
               [style.box-sizing]="'border-box'"
               [style.padding.px]="item.fullBackground ? 4 : null">
 
-              <!--
-                Bileşen Toplam ise getTotal() ile hesaplanan tutar gösterilir.
-                Diğer bileşenlerde item.text gösterilir.
-              -->
-              {{
-                item.type === 'Toplam'
-                  ? ('Toplam: ' + getTotal() + ' TL')
-                  : item.text
-              }}
+              {{ item.text }}
 
             </div>
 
@@ -278,7 +351,7 @@
 
             <!-- ÖNİZLEMEDE ÜRÜNLER -->
             <ng-container
-              *ngIf="item.type === 'Ürünler'; else normalPreviewText">
+              *ngIf="item.type === 'Ürünler'; else notPreviewProducts">
 
               <div class="product-list">
 
@@ -314,6 +387,86 @@
 
 
           <!--
+            YENİ EKLENDİ:
+            Önizlemede Ürünler değilse Toplam kontrol edilir.
+          -->
+          <ng-template #notPreviewProducts>
+
+            <!--
+              YENİ EKLENDİ:
+              ÖNİZLEMEDE TOPLAM BİLGİLERİ BLOĞU
+            -->
+            <ng-container
+              *ngIf="item.type === 'Toplam'; else normalPreviewText">
+
+              <div
+                class="total-block"
+                [style.width.px]="item.width"
+                [style.background-color]="item.backgroundColor">
+
+                <!-- Ara Toplam -->
+                <div
+                  class="total-row"
+                  *ngIf="item.showSubtotal">
+
+                  <span>Ara Toplam:</span>
+
+                  <span>
+                    {{ getSubTotal().toFixed(2) }} TL
+                  </span>
+
+                </div>
+
+
+                <!-- İndirim -->
+                <div
+                  class="total-row"
+                  *ngIf="item.showDiscount">
+
+                  <span>İndirim:</span>
+
+                  <span>
+                    -{{ getDiscount().toFixed(2) }} TL
+                  </span>
+
+                </div>
+
+
+                <!-- KDV -->
+                <div
+                  class="total-row"
+                  *ngIf="item.showVat">
+
+                  <span>
+                    KDV (%{{ getVatRate() }}):
+                  </span>
+
+                  <span>
+                    {{ getVat().toFixed(2) }} TL
+                  </span>
+
+                </div>
+
+
+                <!-- Genel Toplam -->
+                <div class="total-row grand-total">
+
+                  <span>Toplam:</span>
+
+                  <span>
+                    {{ getTotal().toFixed(2) }} TL
+                  </span>
+
+                </div>
+
+              </div>
+
+            </ng-container>
+
+          </ng-template>
+
+
+          <!--
             ÖNİZLEMEDE NORMAL METİNLER
 
             Tasarım alanında yapılan tam satır arka plan seçimi
@@ -328,11 +481,7 @@
               [style.box-sizing]="'border-box'"
               [style.padding.px]="item.fullBackground ? 4 : null">
 
-              {{
-                item.type === 'Toplam'
-                  ? ('Toplam: ' + getTotal() + ' TL')
-                  : item.text
-              }}
+              {{ item.text }}
 
             </div>
 

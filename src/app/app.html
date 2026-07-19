@@ -21,7 +21,8 @@
   [items]="receiptItems"
   [selectedItem]="selectedItem"
   (itemSelected)="selectItem($event)"
-  (componentDropped)="addComponent($event)">
+  (componentDropped)="addComponent($event)"
+  [receiptData]="receiptData">
 </app-receipt-preview>
    <!--itemselected->bu receiptpreviewin output() ile gönderdiği event
   selectedItem($event)-> bu app.tsdeki fonk $->ReceiptPreview'ın gönderdiği veri. -->
