@@ -142,7 +142,7 @@
                   </span>
 
                   <span>
-                    {{ product.quantity * product.price }} TL
+                    {{ product.total.toFixed(2) }} TL
                   </span>
 
                 </div>
@@ -177,7 +177,7 @@
                   <span>Ara Toplam:</span>
 
                   <span>
-                    {{ getSubTotal().toFixed(2) }} TL
+                    {{ item.subTotal.toFixed(2) }} TL
                   </span>
 
                 </div>
@@ -191,7 +191,7 @@
                   <span>İndirim:</span>
 
                   <span>
-                    -{{ getDiscount().toFixed(2) }} TL
+                    -{{ item.discount.toFixed(2) }} TL
                   </span>
 
                 </div>
@@ -203,11 +203,11 @@
                   *ngIf="item.showVat">
 
                   <span>
-                    KDV (%{{ getVatRate() }}):
+                    KDV (%{{ item.vatRate }}):
                   </span>
 
                   <span>
-                    {{ getVat().toFixed(2) }} TL
+                    {{ item.vat.toFixed(2) }} TL
                   </span>
 
                 </div>
@@ -219,7 +219,7 @@
                   <span>Toplam:</span>
 
                   <span>
-                    {{ getTotal().toFixed(2) }} TL
+                    {{ item.total.toFixed(2) }} TL
                   </span>
 
                 </div>
@@ -374,7 +374,7 @@
                   </span>
 
                   <span>
-                    {{ product.quantity * product.price }} TL
+                    {{ product.total.toFixed(2) }} TL
                   </span>
 
                 </div>
@@ -412,7 +412,7 @@
                   <span>Ara Toplam:</span>
 
                   <span>
-                    {{ getSubTotal().toFixed(2) }} TL
+                    {{ item.subTotal.toFixed(2) }} TL
                   </span>
 
                 </div>
@@ -426,7 +426,7 @@
                   <span>İndirim:</span>
 
                   <span>
-                    -{{ getDiscount().toFixed(2) }} TL
+                    -{{ item.discount.toFixed(2) }} TL
                   </span>
 
                 </div>
@@ -438,11 +438,11 @@
                   *ngIf="item.showVat">
 
                   <span>
-                    KDV (%{{ getVatRate() }}):
+                    KDV (%{{ item.vatRate }}):
                   </span>
 
                   <span>
-                    {{ getVat().toFixed(2) }} TL
+                    {{ item.vat.toFixed(2) }} TL
                   </span>
 
                 </div>
@@ -454,7 +454,7 @@
                   <span>Toplam:</span>
 
                   <span>
-                    {{ getTotal().toFixed(2) }} TL
+                    {{ item.total.toFixed(2) }} TL
                   </span>
 
                 </div>

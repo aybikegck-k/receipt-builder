@@ -1,34 +1,39 @@
-//Yeni bileşen oluşturur
+// Yeni fiş bileşenlerini oluşturur.
 
 import { Injectable } from '@angular/core';
 import { ReceiptData } from './receipt.service';
-//ReceiptData interfacesini buraya aktarıyoruz
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReceiptItemService {
+
   createReceiptItem(
     type: string,
     x: number,
     y: number,
-    receiptData: ReceiptData, //json dosyasından gelen fiş verileri
-    total: number,
+    receiptData: ReceiptData
   ): any {
     return {
       id: Date.now() + Math.random(),
       type,
 
-      text: this.getPlaceholderText(type, receiptData, total),
+      // Bileşenin ilk metni JSON verilerine göre hazırlanır.
+      text: this.getPlaceholderText(type, receiptData),
 
+      // Logo bileşenine JSON'daki logo yolu aktarılır.
       imageUrl: type === 'Logo' ? receiptData.logo : '',
 
       logoWidth: 120,
       logoHeight: 80,
 
-      products: type === 'Ürünler' ? [...receiptData.products] : undefined,
+      // Ürünler bileşenine JSON'daki ürün listesi aktarılır.
+      products:
+        type === 'Ürünler'
+          ? [...receiptData.products]
+          : undefined,
 
-      fontSize: 16,
+      fontSize: 12,
       bold: false,
       italic: false,
       underline: false,
@@ -47,7 +52,38 @@ export class ReceiptItemService {
       lineStyle: 'solid',
       lineWidth: 1,
 
-      width: 220, //bileşenin baslangıc genişliği
+      width: 230,
+
+      // Toplam bileşeninde gösterilecek hazır değerler.
+      subTotal:
+        type === 'Toplam'
+          ? receiptData.subTotal
+          : undefined,
+
+      discount:
+        type === 'Toplam'
+          ? receiptData.discount
+          : undefined,
+
+      amountAfterDiscount:
+        type === 'Toplam'
+          ? receiptData.amountAfterDiscount
+          : undefined,
+
+      vatRate:
+        type === 'Toplam'
+          ? receiptData.vatRate
+          : undefined,
+
+      vat:
+        type === 'Toplam'
+          ? receiptData.vat
+          : undefined,
+
+      total:
+        type === 'Toplam'
+          ? receiptData.total
+          : undefined,
 
       showSubtotal: true,
       showDiscount: true,
@@ -58,7 +94,10 @@ export class ReceiptItemService {
     };
   }
 
-  getPlaceholderText(type: string, receiptData: ReceiptData, total: number): string {
+  getPlaceholderText(
+    type: string,
+    receiptData: ReceiptData
+  ): string {
     switch (type) {
       case 'Logo':
       case 'Çizgi':
@@ -92,7 +131,7 @@ export class ReceiptItemService {
         return 'Ürün Listesi';
 
       case 'Toplam':
-        return `Toplam: ${total.toFixed(2)} TL`;
+        return `Toplam: ${receiptData.total.toFixed(2)} TL`;
 
       case 'Dipnot':
         return receiptData.note;

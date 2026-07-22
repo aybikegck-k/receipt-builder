@@ -1,18 +1,19 @@
+// Ürün, toplam ve silme işlemlerini yönetir.
 
-//Ürün, toplam ve silme işlemleri
 import { Injectable } from '@angular/core';
 import { ReceiptData } from './receipt.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReceiptManagerService {
 
-  updateProductsComponent( //bu fonskiyon tasarım alanındaki tüm bileşenlerle jsondan geln fiş verilerini alıyor
+  // JSON'dan gelen ürünleri tasarım alanındaki Ürünler bileşenine aktarır.
+  updateProductsComponent(
     receiptItems: any[],
     receiptData: ReceiptData
   ): void {
-    const productItem = receiptItems.find( //find diziyi sırayla dolaşır ve koşula uyan ilk elemanı getirir
+    const productItem = receiptItems.find(
       item => item.type === 'Ürünler'
     );
 
@@ -21,13 +22,14 @@ export class ReceiptManagerService {
     }
 
     productItem.products = [
-      ...receiptData.products //jsondaki ürünleri bulup tasarım alanındaki ürünler bileşenin içiine koyuyor
+      ...receiptData.products
     ];
   }
 
-  updateTotalComponent( //toplam bileşni ilk 0 olabilir daha sıbra calculate service gittikten sonra güncelleniyor yani burası ekranda görünen yazıyı güncelliyor
+  // JSON'dan gelen hazır toplam bilgilerini Toplam bileşenine aktarır.
+  updateTotalComponent(
     receiptItems: any[],
-    total: number
+    receiptData: ReceiptData
   ): void {
     const totalItem = receiptItems.find(
       item => item.type === 'Toplam'
@@ -37,14 +39,25 @@ export class ReceiptManagerService {
       return;
     }
 
+    // Genel toplam hazır olarak JSON'dan gelir.
     totalItem.text =
-      `Toplam: ${total.toFixed(2)} TL`;
+      `Toplam: ${receiptData.total.toFixed(2)} TL`;
 
-    totalItem.showSubtotal ??= true; // bu özellik null veya undefined ise true yap daha önce değeri varsa değiştirme
+    // Diğer tutarlar da hesaplanmadan doğrudan JSON'dan alınır.
+    totalItem.subTotal = receiptData.subTotal;
+    totalItem.discount = receiptData.discount;
+    totalItem.amountAfterDiscount = receiptData.amountAfterDiscount;
+    totalItem.vatRate = receiptData.vatRate;
+    totalItem.vat = receiptData.vat;
+    totalItem.total = receiptData.total;
+
+    // Bu alanlar daha önce ayarlanmadıysa görünür yapılır.
+    totalItem.showSubtotal ??= true;
     totalItem.showDiscount ??= true;
     totalItem.showVat ??= true;
   }
 
+  // Seçili bileşeni receiptItems dizisinden çıkarır.
   deleteSelectedItem(
     receiptItems: any[],
     selectedItem: any
@@ -53,7 +66,7 @@ export class ReceiptManagerService {
       return receiptItems;
     }
 
-    return receiptItems.filter(  //filter mevcut diziyi değiştirmez yeni bir dizi üretir
+    return receiptItems.filter(
       item => item.id !== selectedItem.id
     );
   }
