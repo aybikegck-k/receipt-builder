@@ -8,8 +8,8 @@ import { Product } from './receipt.service';
 })
 export class CalculationService {
 
-  getSubTotal(products: Product[]): number {
-    if (!Array.isArray(products)) {
+  getSubTotal(products: Product[]): number { //ara toplam hesaplıyor
+    if (!Array.isArray(products)) { //products gerçekten bir dizi mi onu kontrol eder
       return 0;
     }
 
@@ -23,13 +23,15 @@ export class CalculationService {
       0
     );
   }
+  //reduce bir diziyi tek bir sayıya dönüştürür
 
-  getDiscount(
+
+  getDiscount( //indirimi hesaplıyor
     subTotal: number,
     discountValue: number
   ): number {
     const discount = Number(discountValue) || 0;
-
+//başa number koyma sebebimiz jsondan gelen stringi sayı yapması için
     return Math.min(
       Math.max(discount, 0),
       subTotal
@@ -40,10 +42,10 @@ export class CalculationService {
     subTotal: number,
     discount: number
   ): number {
-    return subTotal - discount;
+    return subTotal - discount; //ara toplam-indirim
   }
 
-  getVat(
+  getVat( //kdv hesaplıyor
     amountAfterDiscount: number,
     vatRateValue: number
   ): number {

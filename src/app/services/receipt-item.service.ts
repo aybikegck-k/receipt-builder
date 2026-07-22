@@ -1,46 +1,32 @@
-
 //Yeni bileşen oluşturur
 
 import { Injectable } from '@angular/core';
 import { ReceiptData } from './receipt.service';
+//ReceiptData interfacesini buraya aktarıyoruz
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReceiptItemService {
-
   createReceiptItem(
     type: string,
     x: number,
     y: number,
-    receiptData: ReceiptData,
-    total: number
+    receiptData: ReceiptData, //json dosyasından gelen fiş verileri
+    total: number,
   ): any {
     return {
       id: Date.now() + Math.random(),
       type,
 
-      text:
-        type === 'Toplam'
-          ? `Toplam: ${total.toFixed(2)} TL`
-          : this.getPlaceholderText(
-              type,
-              receiptData,
-              total
-            ),
+      text: this.getPlaceholderText(type, receiptData, total),
 
-      imageUrl:
-        type === 'Logo'
-          ? receiptData.logo
-          : '',
+      imageUrl: type === 'Logo' ? receiptData.logo : '',
 
       logoWidth: 120,
       logoHeight: 80,
 
-      products:
-        type === 'Ürünler'
-          ? [...receiptData.products]
-          : undefined,
+      products: type === 'Ürünler' ? [...receiptData.products] : undefined,
 
       fontSize: 16,
       bold: false,
@@ -61,22 +47,18 @@ export class ReceiptItemService {
       lineStyle: 'solid',
       lineWidth: 1,
 
-      width: 220,
+      width: 220, //bileşenin baslangıc genişliği
 
       showSubtotal: true,
       showDiscount: true,
       showVat: true,
 
       x,
-      y
+      y,
     };
   }
 
-  getPlaceholderText(
-    type: string,
-    receiptData: ReceiptData,
-    total: number
-  ): string {
+  getPlaceholderText(type: string, receiptData: ReceiptData, total: number): string {
     switch (type) {
       case 'Logo':
       case 'Çizgi':
@@ -86,16 +68,13 @@ export class ReceiptItemService {
         return receiptData.restaurantName;
 
       case 'Tarih':
-        return new Date().toLocaleString(
-          'tr-TR',
-          {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-          }
-        );
+        return new Date().toLocaleString('tr-TR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        });
 
       case 'Masa':
         return `Masa No: ${receiptData.tableNo}`;

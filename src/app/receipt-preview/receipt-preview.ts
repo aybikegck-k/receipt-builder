@@ -22,13 +22,6 @@ export class ReceiptPreview {
   @Input() items: any[] = []; //App, receiptItems dizisini ReceiptPreviewe gönderiyor
   @Input() selectedItem: any = null; //appde hangi bileşenin seçili oldugunu receiptpreviewe gönderir
 
-  /*
-    YENİ EKLENDİ:
-    App içindeki receiptData verisini ReceiptPreview bileşenine alır.
-
-    Bu veri sayesinde indirim tutarına ve KDV oranına
-    ReceiptPreview içerisinden ulaşabiliriz.
-  */
   @Input() receiptData: any = {
     discount: 0,
     vatRate: 0,
@@ -49,17 +42,6 @@ export class ReceiptPreview {
     event.preventDefault();//bazen tarayıcı bir elementi baska alanın üzerine bırakmaya izin vermiyor
   }//bu varsayılan bu davranısı engeller ve bırakılabilir hale getirir
 
-
-  /*
-    YENİ EKLENDİ:
-    Ara toplamı hesaplar.
-
-    Öncelikle tasarım alanındaki Ürünler bileşenini bulur.
-    Ürünler bileşeni varsa onun products dizisini kullanır.
-
-    Ürünler bileşeni henüz eklenmemişse receipt-data.json
-    içerisinden gelen ürünleri kullanır.
-  */
   getSubTotal(): number {
     const productItem = this.items.find(
       item => item.type === 'Ürünler'
@@ -88,16 +70,6 @@ export class ReceiptPreview {
       0
     );
   }
-
-
-  /*
-    YENİ EKLENDİ:
-    JSON dosyasından gelen indirim tutarını döndürür.
-
-    İndirim negatif olamaz.
-    İndirim ara toplamdan büyükse ara toplam kadar kabul edilir.
-    Böylece toplamın negatif olması engellenir.
-  */
   getDiscount(): number {
     const discount =
       Number(this.receiptData?.discount) || 0;
@@ -107,32 +79,11 @@ export class ReceiptPreview {
       this.getSubTotal()
     );
   }
-
-
-  /*
-    YENİ EKLENDİ:
-    JSON dosyasından gelen KDV oranını döndürür.
-  */
   getVatRate(): number {
     return Number(
       this.receiptData?.vatRate
     ) || 0;
   }
-
-
-  /*
-    YENİ EKLENDİ:
-    KDV, indirim uygulandıktan sonra kalan tutar
-    üzerinden hesaplanır.
-
-    Örnek:
-    Ara toplam = 2200
-    İndirim = 100
-    KDV oranı = %10
-
-    KDV = (2200 - 100) × 10 / 100
-    KDV = 210
-  */
   getVat(): number {
     const amountAfterDiscount =
       this.getSubTotal() -
@@ -144,15 +95,6 @@ export class ReceiptPreview {
       100
     );
   }
-
-
-  /*
-    YENİ EKLENDİ:
-    Genel toplamı hesaplar.
-
-    Genel Toplam =
-    Ara Toplam - İndirim + KDV
-  */
   getTotal(): number {
     return (
       this.getSubTotal() -
@@ -160,8 +102,6 @@ export class ReceiptPreview {
       this.getVat()
     );
   }
-
-
   dropComponent(event: DragEvent) {
     event.preventDefault();
 
